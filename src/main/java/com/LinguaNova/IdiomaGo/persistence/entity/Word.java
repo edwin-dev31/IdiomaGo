@@ -19,9 +19,6 @@ public class Word {
 	@Column(nullable = false)
 	private String name;
 
-	@OneToMany(mappedBy = "word")
-	private Set<WordTranslation> translations;
-
 	public Long getId() {
 		return id;
 	}
@@ -36,14 +33,5 @@ public class Word {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Set<WordTranslation> getTranslations() {
-		return translations;
-	}
-
-	public void setTranslations(
-		Set<WordTranslation> translations) {
-		this.translations = translations;
 	}
 }

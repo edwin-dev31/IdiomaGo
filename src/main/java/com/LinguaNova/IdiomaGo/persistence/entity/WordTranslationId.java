@@ -9,5 +9,12 @@ public class WordTranslationId implements Serializable {
 	private Long wordId;
 	private Long languageId;
 
-	// equals, hashCode, getters, setters, constructors
+	public WordTranslationId() {
+	}
+
+
+	public WordTranslationId(Long wordId, Long languageId) {
+		this.wordId = wordId;
+		this.languageId = languageId;
+	}
 }

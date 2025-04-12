@@ -19,10 +19,6 @@ public class Language {
 	@Column(nullable = false)
 	private String name;
 
-	@OneToMany(mappedBy = "language")
-	private Set<WordTranslation> translations;
-
-
 	public Long getId() {
 		return id;
 	}
@@ -39,14 +35,6 @@ public class Language {
 		this.name = name;
 	}
 
-	public Set<WordTranslation> getTranslations() {
-		return translations;
-	}
-
-	public void setTranslations(
-		Set<WordTranslation> translations) {
-		this.translations = translations;
-	}
 }
 
 
