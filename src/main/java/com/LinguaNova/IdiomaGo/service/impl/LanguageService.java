@@ -1,7 +1,7 @@
 package com.LinguaNova.IdiomaGo.service.impl;
 
 
-import com.LinguaNova.IdiomaGo.persistence.entity.Language;
+import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.ILanguageRepository;
 import com.LinguaNova.IdiomaGo.service.interfaces.ILanguageService;
 import java.util.List;
@@ -16,22 +16,22 @@ public class LanguageService implements ILanguageService {
 	private ILanguageRepository repository;
 
 	@Override
-	public List<Language> getAll() {
+	public List<LanguageEntity> getAll() {
 		return repository.findAll();
 	}
 
 	@Override
-	public Optional<Language> getById(Long id) {
+	public Optional<LanguageEntity> getById(Long id) {
 		return repository.findById(id);
 	}
 
 	@Override
-	public Language save(Language language) {
-		return repository.save(language);
+	public LanguageEntity save(LanguageEntity languageEntity) {
+		return repository.save(languageEntity);
 	}
 
 	@Override
-	public Language update(Long id, Language langDetails) {
+	public LanguageEntity update(Long id, LanguageEntity langDetails) {
 		return repository.findById(id)
 			.map(word -> {
 				word.setName(langDetails.getName());

@@ -1,6 +1,6 @@
 # 🌐 IdiomaGo
 
-**IdiomaGo** is a web application built with **Spring Boot** and **Java**, designed to facilitate language learning in an interactive and dynamic way.  
+**IdiomaGo** is a web application built with **Spring Boot** and **Java**, designed to facilitate languageEntity learning in an interactive and dynamic way.  
 It allows easy management of words, translations, and multiple languages—perfect for building strong vocabulary and comprehension skills.
 
 ---

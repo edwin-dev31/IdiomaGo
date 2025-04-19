@@ -1,6 +1,6 @@
 package com.LinguaNova.IdiomaGo.service.impl;
 
-import com.LinguaNova.IdiomaGo.persistence.entity.Word;
+import com.LinguaNova.IdiomaGo.persistence.entity.WordEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.IWordRepository;
 import com.LinguaNova.IdiomaGo.service.interfaces.IWordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +16,22 @@ public class WordService implements IWordService {
 	private IWordRepository repository;
 
 	@Override
-	public List<Word> getAll() {
+	public List<WordEntity> getAll() {
 		return repository.findAll();
 	}
 
 	@Override
-	public Optional<Word> getById(Long id) {
+	public Optional<WordEntity> getById(Long id) {
 		return repository.findById(id);
 	}
 
 	@Override
-	public Word save(Word word) {
+	public WordEntity save(WordEntity word) {
 		return repository.save(word);
 	}
 
 	@Override
-	public Word update(Long id, Word wordDetails) {
+	public WordEntity update(Long id, WordEntity wordDetails) {
 		return repository.findById(id)
 			.map(word -> {
 				word.setName(wordDetails.getName());

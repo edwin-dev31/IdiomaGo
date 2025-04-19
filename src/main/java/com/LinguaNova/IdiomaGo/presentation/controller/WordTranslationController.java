@@ -1,7 +1,6 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
-import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslation;
-import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationId;
+import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationEntity;
 import com.LinguaNova.IdiomaGo.presentation.dto.WordTranslationDto;
 import com.LinguaNova.IdiomaGo.service.impl.WordTranslationService;
 import org.springframework.http.ResponseEntity;
@@ -24,39 +23,23 @@ public class WordTranslationController {
 		return service.getAll();
 	}
 
-	@GetMapping("/{wordId}/{languageId}")
-	public ResponseEntity<WordTranslationDto> getById(@PathVariable Long wordId, @PathVariable Long languageId) {
-		WordTranslationId id = new WordTranslationId(wordId, languageId);
+	@GetMapping("/{id}")
+	public ResponseEntity<WordTranslationDto> getById(@PathVariable Long id) {
 		return service.getById(id)
 			.map(ResponseEntity::ok)
 			.orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public WordTranslationDto save(@RequestBody WordTranslation wordTranslation) {
-		return service.save(wordTranslation);
+	public WordTranslationDto save(@RequestBody WordTranslationEntity wordTranslationEntity) {
+		return service.save(wordTranslationEntity);
 	}
 
-	@DeleteMapping("/{wordId}/{languageId}")
-	public ResponseEntity<Void> delete(@PathVariable Long wordId, @PathVariable Long languageId) {
-		WordTranslationId id = new WordTranslationId(wordId, languageId);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@GetMapping("/word/translate/{name}")
-	public List<WordTranslationDto> getByTranslatedWord(@PathVariable String name) {
-		return service.getByTranslatedWord(name);
-	}
-
-	@GetMapping("/word/{wordName}")
-	public List<WordTranslationDto> getByOriginalWordName(@PathVariable String wordName) {
-		return service.getByWordName(wordName);
-	}
-
-	@GetMapping("/language/{langName}")
-	public List<WordTranslationDto> getByLanguegaWordName(@PathVariable String langName) {
-		return service.getByLangName(langName);
 	}
 
 	@GetMapping("/language/id/{langId}")

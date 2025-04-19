@@ -1,21 +1,46 @@
-CREATE TABLE language (
+CREATE TABLE IF NOT EXISTS language (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(100) NOT NULL UNIQUE,
+    code VARCHAR(10)
 );
 
-CREATE TABLE word (
+CREATE TABLE IF NOT EXISTS users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE word_translation (
-    word_id BIGINT NOT NULL,
-    language_id BIGINT NOT NULL,
-    translated_word VARCHAR(255),
-    translated_example VARCHAR(255),
-    translated_description VARCHAR(255),
-    image_url VARCHAR(255),
-    PRIMARY KEY (word_id, language_id),
-    FOREIGN KEY (word_id) REFERENCES word(id),
+CREATE TABLE IF NOT EXISTS word (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    language_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (language_id) REFERENCES language(id)
 );
+
+CREATE TABLE IF NOT EXISTS word_translation (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    word_id BIGINT NOT NULL,
+    language_id BIGINT NOT NULL,
+    translated_word VARCHAR(255) NOT NULL,
+    translated_example TEXT,
+    translated_description TEXT,
+    image_url VARCHAR(255),
+    audio_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (word_id) REFERENCES word(id) ON DELETE CASCADE,
+    FOREIGN KEY (language_id) REFERENCES language(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS favorites (
+    user_id BIGINT NOT NULL,
+    word_translation_id BIGINT NOT NULL,
+    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, word_translation_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (word_translation_id) REFERENCES word_translation(id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_word_language ON word_translation (word_id, language_id);

@@ -1,6 +1,6 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
-import com.LinguaNova.IdiomaGo.persistence.entity.Language;
+import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
 import com.LinguaNova.IdiomaGo.service.interfaces.ILanguageService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +20,24 @@ public class LanguageController {
 	private ILanguageService service;
 
 	@GetMapping
-	public List<Language> getAllWords() {
+	public List<LanguageEntity> getAllWords() {
 		return service.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public Language getWordById(@PathVariable Long id) {
+	public LanguageEntity getWordById(@PathVariable Long id) {
 		return service.getById(id)
 			.orElseThrow(() -> new RuntimeException("Palabra no encontrada con ID: " + id));
 	}
 
 
 	@PostMapping
-	public Language createWord(@RequestBody Language lang) {
+	public LanguageEntity createWord(@RequestBody LanguageEntity lang) {
 		return service.save(lang);
 	}
 
 	@PutMapping("/{id}")
-	public Language updateWord(@PathVariable Long id, @RequestBody Language lang) {
+	public LanguageEntity updateWord(@PathVariable Long id, @RequestBody LanguageEntity lang) {
 		return service.update(id, lang);
 	}
 

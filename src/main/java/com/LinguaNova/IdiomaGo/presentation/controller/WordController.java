@@ -1,9 +1,7 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
-import com.LinguaNova.IdiomaGo.persistence.entity.Word;
-import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslation;
+import com.LinguaNova.IdiomaGo.persistence.entity.WordEntity;
 import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,24 +21,24 @@ public class WordController {
 	private IWordService wordService;
 
 	@GetMapping
-	public List<Word> getAllWords() {
+	public List<WordEntity> getAllWords() {
 		return wordService.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public Word getWordById(@PathVariable Long id) {
+	public WordEntity getWordById(@PathVariable Long id) {
 		return wordService.getById(id)
 			.orElseThrow(() -> new RuntimeException("Palabra no encontrada con ID: " + id));
 	}
 
 
 	@PostMapping
-	public Word createWord(@RequestBody Word word) {
+	public WordEntity createWord(@RequestBody WordEntity word) {
 		return wordService.save(word);
 	}
 
 	@PutMapping("/{id}")
-	public Word updateWord(@PathVariable Long id, @RequestBody Word word) {
+	public WordEntity updateWord(@PathVariable Long id, @RequestBody WordEntity word) {
 		return wordService.update(id, word);
 	}
 

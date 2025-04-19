@@ -1,14 +1,14 @@
 package com.LinguaNova.IdiomaGo.service.interfaces;
 
-import com.LinguaNova.IdiomaGo.persistence.entity.Word;
+import com.LinguaNova.IdiomaGo.persistence.entity.WordEntity;
 import java.util.List;
 import java.util.Optional;
 
 public interface IWordService {
-	List<Word> getAll();
-	Optional<Word> getById(Long id);
-	Word save(Word word);
-	Word update(Long id, Word word);
+	List<WordEntity> getAll();
+	Optional<WordEntity> getById(Long id);
+	WordEntity save(WordEntity word);
+	WordEntity update(Long id, WordEntity word);
 	void delete(Long id);
 }
 
