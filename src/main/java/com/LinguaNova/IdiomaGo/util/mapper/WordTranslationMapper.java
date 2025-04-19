@@ -5,7 +5,9 @@ import com.LinguaNova.IdiomaGo.presentation.dto.WordTranslationDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WordTranslationMapper implements Mapper<WordTranslation, WordTranslationDto> {
 
 	@Override
