@@ -4,7 +4,7 @@ import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.IWordTransalationRepository;
 import com.LinguaNova.IdiomaGo.presentation.dto.WordTranslationDto;
 import com.LinguaNova.IdiomaGo.service.interfaces.IWordTranslationService;
-import com.LinguaNova.IdiomaGo.util.mapper.WordTranslationMapper;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.WordTranslationMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

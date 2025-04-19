@@ -56,11 +56,11 @@ public class UserEntity {
 		this.username = username;
 	}
 
-	public String getPasswordHash() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setPasswordHash(String passwordHash) {
+	public void setPassword(String passwordHash) {
 		this.password = passwordHash;
 	}
 
