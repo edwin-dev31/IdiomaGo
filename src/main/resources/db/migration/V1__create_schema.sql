@@ -14,10 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS word (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    language_id BIGINT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (language_id) REFERENCES language(id)
+    name VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS word_translation (
@@ -37,7 +35,7 @@ CREATE TABLE IF NOT EXISTS word_translation (
 CREATE TABLE IF NOT EXISTS favorites (
     user_id BIGINT NOT NULL,
     word_translation_id BIGINT NOT NULL,
-    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, word_translation_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (word_translation_id) REFERENCES word_translation(id) ON DELETE CASCADE

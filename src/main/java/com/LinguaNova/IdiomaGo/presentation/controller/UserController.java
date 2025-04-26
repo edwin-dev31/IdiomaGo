@@ -1,7 +1,7 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
-import com.LinguaNova.IdiomaGo.presentation.dto.CreateUserDto;
-import com.LinguaNova.IdiomaGo.presentation.dto.UserDto;
+import com.LinguaNova.IdiomaGo.presentation.dto.user.CreateUserDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
 import java.net.URI;
 import java.util.List;
@@ -19,28 +19,28 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<UserDto>> getAll() {
-		List<UserDto> users = userService.getAll();
+	public ResponseEntity<List<UserDTO>> getAll() {
+		List<UserDTO> users = userService.getAll();
 		return ResponseEntity.ok(users);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDto> getById(@PathVariable Long id) {
+	public ResponseEntity<UserDTO> getById(@PathVariable Long id) {
 		return userService.getById(id)
 			.map(ResponseEntity::ok)
 			.orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDto> create(@RequestBody CreateUserDto dto) {
-		UserDto created = userService.save(dto);
+	public ResponseEntity<UserDTO> create(@RequestBody CreateUserDTO dto) {
+		UserDTO created = userService.save(dto);
 		return ResponseEntity.created(URI.create("/api/users/" + created.getId())).body(created);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody CreateUserDto dto) {
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody CreateUserDTO dto) {
 		try {
-			UserDto updated = userService.update(id, dto);
+			UserDTO updated = userService.update(id, dto);
 			return ResponseEntity.ok(updated);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();

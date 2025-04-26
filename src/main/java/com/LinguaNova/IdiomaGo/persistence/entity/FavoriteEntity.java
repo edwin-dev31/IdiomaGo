@@ -60,5 +60,4 @@ public class FavoriteEntity {
 		this.createdAt = createdAt;
 	}
 
-// Getters y setters
 }

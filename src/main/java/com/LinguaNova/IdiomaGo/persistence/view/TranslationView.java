@@ -12,7 +12,6 @@ import org.hibernate.annotations.Immutable;
 public class TranslationView {
 	@Id
 	private Long translationId;
-
 	private Long wordId;
 	private String originalWord;
 

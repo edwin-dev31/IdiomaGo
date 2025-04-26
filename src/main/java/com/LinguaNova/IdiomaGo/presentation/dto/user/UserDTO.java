@@ -1,8 +1,8 @@
-package com.LinguaNova.IdiomaGo.presentation.dto;
+package com.LinguaNova.IdiomaGo.presentation.dto.user;
 
 import java.time.LocalDateTime;
 
-public class UserDto {
+public class UserDTO {
 	private Long id;
 	private String username;
 	private String password;

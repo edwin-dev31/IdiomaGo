@@ -1,7 +1,8 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
 import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationEntity;
-import com.LinguaNova.IdiomaGo.presentation.dto.WordTranslationDto;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.CreateWordTranslationDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.WordTranslationDTO;
 import com.LinguaNova.IdiomaGo.service.impl.WordTranslationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +20,20 @@ public class WordTranslationController {
 	}
 
 	@GetMapping
-	public List<WordTranslationDto> getAll() {
+	public List<WordTranslationDTO> getAll() {
 		return service.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<WordTranslationDto> getById(@PathVariable Long id) {
+	public ResponseEntity<WordTranslationDTO> getById(@PathVariable Long id) {
 		return service.getById(id)
 			.map(ResponseEntity::ok)
 			.orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
-	public WordTranslationDto save(@RequestBody WordTranslationEntity wordTranslationEntity) {
-		return service.save(wordTranslationEntity);
+	public WordTranslationDTO save(@RequestBody CreateWordTranslationDTO createWordTranslationDTO) {
+		return service.save(createWordTranslationDTO);
 	}
 
 	@DeleteMapping("/{id}")
@@ -43,7 +44,7 @@ public class WordTranslationController {
 	}
 
 	@GetMapping("/language/id/{langId}")
-	public List<WordTranslationDto> getByLanguegaWordName(@PathVariable Long langId) {
+	public List<WordTranslationDTO> getByLanguegaWordName(@PathVariable Long langId) {
 		return service.getByLangId(langId);
 	}
 }

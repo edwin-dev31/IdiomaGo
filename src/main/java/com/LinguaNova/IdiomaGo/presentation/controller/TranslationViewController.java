@@ -28,6 +28,16 @@ public class TranslationViewController {
 			.orElse(ResponseEntity.notFound().build());
 	}
 
+	@GetMapping("/search/{word}/language/{languageCode}")
+	public ResponseEntity<List<TranslationView>> searchTranslationAndLanguage(
+		@PathVariable String word,
+		@PathVariable String languageCode
+	) {
+		return ResponseEntity
+			.ok(translationViewService.searchTranslationAndLanguage(word, languageCode));
+	}
+
+
 	// 2. Get all translations of a word
 	@GetMapping("/word/{word}")
 	public ResponseEntity<List<TranslationView>> getAllByWord(@PathVariable String word) {
@@ -47,14 +57,14 @@ public class TranslationViewController {
 	}
 
 	// 5. Search translations by keyword in description
-	@GetMapping("/search-description")
-	public ResponseEntity<List<TranslationView>> searchByDescription(@RequestParam String keyword) {
+	@GetMapping("/search-description/{keyword}")
+	public ResponseEntity<List<TranslationView>> searchByDescription(@PathVariable String keyword) {
 		return ResponseEntity.ok(translationViewService.searchByDescription(keyword));
 	}
 
 	// 6. Search translations by partial word
-	@GetMapping("/search-word")
-	public ResponseEntity<List<TranslationView>> searchByPartialWord(@RequestParam String partial) {
+	@GetMapping("/search/{partial}")
+	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
 		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
 	}
 }

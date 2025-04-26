@@ -21,18 +21,13 @@ public class WordEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String name;
-
-	@ManyToOne
-	@JoinColumn(name = "language_id")
-	private LanguageEntity languageEntity;
 
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@OneToMany(mappedBy = "word", cascade = CascadeType.ALL)
 	private List<WordTranslationEntity> translations = new ArrayList<>();
-
 
 	public Long getId() {
 		return id;
@@ -48,14 +43,6 @@ public class WordEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public LanguageEntity getLanguage() {
-		return languageEntity;
-	}
-
-	public void setLanguage(LanguageEntity languageEntity) {
-		this.languageEntity = languageEntity;
 	}
 
 	public LocalDateTime getCreatedAt() {

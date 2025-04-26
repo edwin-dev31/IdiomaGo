@@ -1,14 +1,18 @@
 package com.LinguaNova.IdiomaGo.service.impl;
 
+import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
 import com.LinguaNova.IdiomaGo.persistence.entity.UserEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.IUserRepository;
-import com.LinguaNova.IdiomaGo.presentation.dto.CreateUserDto;
-import com.LinguaNova.IdiomaGo.presentation.dto.UserDto;
+import com.LinguaNova.IdiomaGo.presentation.dto.user.CreateUserDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
-import com.LinguaNova.IdiomaGo.util.mapper.impl.CreateUserMapper;
-import com.LinguaNova.IdiomaGo.util.mapper.impl.UserMapper;
+import com.LinguaNova.IdiomaGo.util.exception.DuplicateResourceException;
+import com.LinguaNova.IdiomaGo.util.exception.ResourceNotFoundException;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.user.CreateUserMapper;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.user.UserMapper;
 import java.util.List;
 import java.util.Optional;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,26 +33,39 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public List<UserDto> getAll() {
+	public List<UserDTO> getAll() {
 		return userMapper.mapToList(repository.findAll());
 	}
 
 	@Override
-	public Optional<UserDto> getById(Long id) {
+	public Optional<UserDTO> getById(Long id) {
 		return repository.findById(id)
 			.map(userMapper::mapTo);
 	}
 
 	@Override
-	public UserDto save(CreateUserDto dto) {
+	public Optional<UserDTO> getByUsername(String userName) {
+		return repository.findByUsername(userName)
+			.map(userMapper::mapTo);
+	}
+
+	@Override
+	public UserDTO save(CreateUserDTO dto) {
 		UserEntity entity = createUserMapper.mapFrom(dto);
+		if (repository.findByUsername(dto.getUsername()).isPresent()){
+			throw new DuplicateResourceException("Username already exists: " + dto.getUsername());
+		}
+		if (repository.findByEmail(dto.getEmail()).isPresent()){
+			throw new DuplicateResourceException("Email already exists: " + dto.getUsername());
+		}
+
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 		UserEntity saved = repository.save(entity);
 		return userMapper.mapTo(saved);
 	}
 
 	@Override
-	public UserDto update(Long id, CreateUserDto dto) {
+	public UserDTO update(Long id, CreateUserDTO dto) {
 		return repository.findById(id)
 			.map(user -> {
 				user.setUsername(dto.getUsername());
@@ -57,7 +74,7 @@ public class UserService implements IUserService {
 				UserEntity updated = repository.save(user);
 				return userMapper.mapTo(updated);
 			})
-			.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+			.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 	}
 
 	@Override

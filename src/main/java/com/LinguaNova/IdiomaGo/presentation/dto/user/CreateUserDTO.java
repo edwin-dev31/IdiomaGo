@@ -1,6 +1,6 @@
-package com.LinguaNova.IdiomaGo.presentation.dto;
+package com.LinguaNova.IdiomaGo.presentation.dto.user;
 
-public class CreateUserDto {
+public class CreateUserDTO {
 	private String username;
 	private String password;
 	private String email;

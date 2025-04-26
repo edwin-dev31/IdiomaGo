@@ -1,4 +1,4 @@
-CREATE VIEW IF NOT EXISTS view_translations AS
+CREATE VIEW view_translations AS
 SELECT
     wt.id AS translation_id,
     w.id AS word_id,

@@ -3,17 +3,23 @@ package com.LinguaNova.IdiomaGo.service.impl;
 
 import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.ILanguageRepository;
+import com.LinguaNova.IdiomaGo.presentation.dto.language.CreateLanguageDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ILanguageService;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.language.CreateLanguageMapper;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LanguageService implements ILanguageService {
 
-	@Autowired
-	private ILanguageRepository repository;
+	private final ILanguageRepository repository;
+	private final CreateLanguageMapper mapper;
+
+	public LanguageService(ILanguageRepository repository, CreateLanguageMapper mapper) {
+		this.repository = repository;
+		this.mapper = mapper;
+	}
 
 	@Override
 	public List<LanguageEntity> getAll() {
@@ -26,7 +32,8 @@ public class LanguageService implements ILanguageService {
 	}
 
 	@Override
-	public LanguageEntity save(LanguageEntity languageEntity) {
+	public LanguageEntity save(CreateLanguageDTO languageDTO) {
+		LanguageEntity languageEntity = mapper.mapFrom(languageDTO);
 		return repository.save(languageEntity);
 	}
 

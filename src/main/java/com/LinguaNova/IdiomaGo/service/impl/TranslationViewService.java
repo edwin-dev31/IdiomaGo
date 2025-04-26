@@ -19,7 +19,11 @@ public class TranslationViewService implements ITranslationViewService {
 
 	@Override
 	public Optional<TranslationView> getByWordAndLanguage(String word, String languageCode) {
-		return translationViewRepository.findByOriginalWordAndLanguageCode(word, languageCode);
+		return translationViewRepository.findByTranslatedWordAndLanguageCode(word, languageCode);
+	}
+
+	public List<TranslationView> searchTranslationAndLanguage(String query, String languageCode) {
+		return translationViewRepository.findByTranslatedWordContainingIgnoreCaseAndLanguageCode(query, languageCode);
 	}
 
 	@Override
@@ -44,6 +48,6 @@ public class TranslationViewService implements ITranslationViewService {
 
 	@Override
 	public List<TranslationView> searchByPartialWord(String partialWord) {
-		return translationViewRepository.findByOriginalWordContainingIgnoreCase(partialWord);
+		return translationViewRepository.findByTranslatedWordContainingIgnoreCase(partialWord);
 	}
 }

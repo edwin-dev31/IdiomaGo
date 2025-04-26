@@ -1,4 +1,4 @@
-package com.LinguaNova.IdiomaGo.presentation.dto;
+package com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation;
 
 import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
 import com.LinguaNova.IdiomaGo.persistence.entity.UserEntity;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WordTranslationDto {
+public class WordTranslationDTO {
 	private Long id;
 	private String translatedWord;
 	private String translatedExample;
@@ -18,10 +18,10 @@ public class WordTranslationDto {
 	private Set<UserEntity> favoritedBy = new HashSet<>();
 
 
-	public WordTranslationDto() {
+	public WordTranslationDTO() {
 	}
 
-	public WordTranslationDto(Long id, WordEntity word, LanguageEntity language,
+	public WordTranslationDTO(Long id, WordEntity word, LanguageEntity language,
 		String translatedWord,
 		String translatedExample, String translatedDescription, String imageUrl, String audioUrl,
 		LocalDateTime createdAt, Set<UserEntity> favoritedBy) {

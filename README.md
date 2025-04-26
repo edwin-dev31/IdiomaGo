@@ -20,29 +20,25 @@ It allows easy management of words, translations, and multiple languages—perfe
 
 Follow these steps to set up the MySQL database for **IdiomaGo** using Docker:
 
-### 1️⃣ Pull the MySQL Docker Image
+### 1️⃣ Create containers and Image
+crear el `.jar`
 
 ```bash
-docker pull mysql:latest
+./mvnw clean package
 ```
 
-2️⃣ Run the MySQL Container
 
 ```bash
-docker run -d --name idiomago -e MYSQL_ROOT_PASSWORD=idiomago -e MYSQL_USER=edwin -e MYSQL_PASSWORD=edwin123 -e MYSQL_DATABASE=idiomagodb -p 3307:3306 mysql
+docker-compose up -d
 ```
 
-3️⃣ Access the MySQL CLI
+2️⃣ Access the MySQL CLI
 ```bash
 docker exec -it idiomago mysql -u root -p
 ```
 ó
 ```bash
-docker exec -it idiomago mysql -u edwin -p
+docker exec -it idioma_go_db mysql -u edwin -p
 ```
 
-▶️ Running the Project
-
-```bash
-mvn spring-boot:run
-```
+▶️ You can run the proyect excecute the `idioma_go_app` using the port `localhost:1731`

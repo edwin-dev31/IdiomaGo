@@ -1,6 +1,7 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
 import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
+import com.LinguaNova.IdiomaGo.presentation.dto.language.CreateLanguageDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ILanguageService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class LanguageController {
 
 
 	@PostMapping
-	public LanguageEntity createWord(@RequestBody LanguageEntity lang) {
+	public LanguageEntity createWord(@RequestBody CreateLanguageDTO lang) {
 		return service.save(lang);
 	}
 

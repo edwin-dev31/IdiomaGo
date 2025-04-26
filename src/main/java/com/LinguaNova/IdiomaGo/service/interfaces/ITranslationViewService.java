@@ -6,14 +6,10 @@ import java.util.Optional;
 
 public interface ITranslationViewService {
 	Optional<TranslationView> getByWordAndLanguage(String word, String languageCode);
-
+	List<TranslationView> searchTranslationAndLanguage(String query, String languageCode);
 	List<TranslationView> getAllByWord(String word);
-
 	List<TranslationView> getAllByLanguage(String languageCode);
-
 	List<TranslationView> getAllWithExamples();
-
 	List<TranslationView> searchByDescription(String keyword);
-
 	List<TranslationView> searchByPartialWord(String partialWord);
 }
