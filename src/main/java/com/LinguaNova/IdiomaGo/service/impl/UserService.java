@@ -56,7 +56,7 @@ public class UserService implements IUserService {
 			throw new DuplicateResourceException("Username already exists: " + dto.getUsername());
 		}
 		if (repository.findByEmail(dto.getEmail()).isPresent()){
-			throw new DuplicateResourceException("Email already exists: " + dto.getUsername());
+			throw new DuplicateResourceException("Email already exists: " + dto.getEmail());
 		}
 
 		entity.setPassword(passwordEncoder.encode(dto.getPassword()));

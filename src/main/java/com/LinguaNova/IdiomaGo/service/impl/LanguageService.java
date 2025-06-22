@@ -1,13 +1,18 @@
 package com.LinguaNova.IdiomaGo.service.impl;
 
 
+import com.LinguaNova.IdiomaGo.external.language.LanguageApiClient;
 import com.LinguaNova.IdiomaGo.persistence.entity.LanguageEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.ILanguageRepository;
 import com.LinguaNova.IdiomaGo.presentation.dto.language.CreateLanguageDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ILanguageService;
 import com.LinguaNova.IdiomaGo.util.mapper.impl.language.CreateLanguageMapper;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,11 +20,13 @@ public class LanguageService implements ILanguageService {
 
 	private final ILanguageRepository repository;
 	private final CreateLanguageMapper mapper;
+	private final LanguageApiClient languageApiClient;
 
-	public LanguageService(ILanguageRepository repository, CreateLanguageMapper mapper) {
+	public LanguageService(ILanguageRepository repository, CreateLanguageMapper mapper, LanguageApiClient languageApiClient) {
 		this.repository = repository;
 		this.mapper = mapper;
-	}
+        this.languageApiClient = languageApiClient;
+    }
 
 	@Override
 	public List<LanguageEntity> getAll() {
@@ -50,4 +57,28 @@ public class LanguageService implements ILanguageService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+
+	@Override
+	public void importLanguages() {
+
+		List<Map<String, String>> externalLanguages = languageApiClient.fetchLanguagesFromExternalApi();
+
+		Set<String> existingCodes = repository.findAll()
+				.stream()
+				.map(LanguageEntity::getCode)
+				.collect(Collectors.toSet());
+
+		List<LanguageEntity> languagesToSave = externalLanguages.stream()
+				.filter(lang -> !existingCodes.contains(lang.get("code")))
+				.map(lang -> {
+					CreateLanguageDTO dto = new CreateLanguageDTO();
+					dto.setCode(lang.get("code"));
+					dto.setName(lang.get("name"));
+					return mapper.mapFrom(dto);
+				})
+				.toList();
+
+		repository.saveAll(languagesToSave);
+	}
+
 }

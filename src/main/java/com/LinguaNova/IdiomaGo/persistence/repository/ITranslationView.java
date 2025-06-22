@@ -7,23 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ITranslationView extends JpaRepository<TranslationView, Long> {
 
-	// 1. Find a specific translation for a word in a given language
 	Optional<TranslationView> findByTranslatedWordAndLanguageCode(String word, String languageCode);
 
-	List<TranslationView> findByTranslatedWordContainingIgnoreCaseAndLanguageCode(String word, String languageCode);
+	List<TranslationView> findByWordIdAndLanguageCode(Long wordId, String languageCode);
+	List<TranslationView> findByOriginalWordIgnoreCaseOrderByLanguageCode(String word);
+	List<TranslationView> findByTranslatedWordIgnoreCaseOrderByLanguageCode(String translatedWord);
 
-	// 2. List all translations for a given word, sorted by language
-	List<TranslationView> findByOriginalWordOrderByLanguageCode(String originalWord);
-
-	// 3. List all translations available in a specific language, sorted by word
 	List<TranslationView> findByLanguageCodeOrderByOriginalWord(String languageCode);
 
-	// 4. Find all translations that include an example sentence
 	List<TranslationView> findByTranslatedExampleIsNotNull();
 
-	// 5. Search translations by partial match in the description (case-insensitive)
 	List<TranslationView> findByTranslatedDescriptionContainingIgnoreCase(String keyword);
 
-	// 6. Search original words by partial match (for autocomplete, etc.)
 	List<TranslationView> findByTranslatedWordContainingIgnoreCase(String partialWord);
 }

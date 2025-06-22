@@ -28,7 +28,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
 		String token = jwtUtil.generateToken(email);
 
-		String redirectUrl = "http://localhost:5173/oauth2-redirect?token=" + token;
+		/*String redirectUrl = "http://localhost:5173/oauth2-redirect?token=" + token;
 		response.sendRedirect(redirectUrl);
 
 		System.out.println();
@@ -37,5 +37,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		System.out.println(redirectUrl);
 
 		System.out.println();
+		
+		 */
 	}
 }

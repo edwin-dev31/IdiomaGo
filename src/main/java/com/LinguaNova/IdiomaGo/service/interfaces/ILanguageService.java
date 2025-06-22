@@ -11,4 +11,5 @@ public interface ILanguageService {
 	LanguageEntity save(CreateLanguageDTO languageDTO);
 	LanguageEntity update(Long id, LanguageEntity languageEntity);
 	void delete(Long id);
+	void importLanguages();
 }

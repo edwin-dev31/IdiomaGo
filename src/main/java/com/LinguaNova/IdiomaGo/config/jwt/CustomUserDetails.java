@@ -21,14 +21,15 @@ public class CustomUserDetails implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("Buscando usuario en la BD: " + username);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		System.out.println("Searching user in DB: " + email + "nOY");
 
-		UserEntity userEntity = userRepository.findByUsername(username)
-			.orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + username));
+		UserEntity userEntity = userRepository.findByEmail(email)
+			.orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
 
+		System.out.println("USEEEEER");
 		System.out.println(userEntity);
-		return User.withUsername(userEntity.getUsername())
+		return User.withUsername(userEntity.getEmail())
 			.password(userEntity.getPassword())
 			.roles("USER")
 			.build();

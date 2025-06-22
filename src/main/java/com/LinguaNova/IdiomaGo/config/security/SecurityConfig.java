@@ -37,6 +37,7 @@ public class SecurityConfig {
 
 				request.requestMatchers(HttpMethod.GET, "/", "/api/translations/**").permitAll();
 				request.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
+				request.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
 				request.requestMatchers(HttpMethod.POST, "/api/users").permitAll();
 				request.requestMatchers(HttpMethod.GET, "/oauth2/**").permitAll();
 				request.anyRequest().authenticated();
@@ -68,8 +69,10 @@ public class SecurityConfig {
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setAllowCredentials(true);
 
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
 }

@@ -5,6 +5,8 @@ import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
 import java.net.URI;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +34,13 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> create(@RequestBody CreateUserDTO dto) {
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody CreateUserDTO dto) {
 		UserDTO created = userService.save(dto);
 		return ResponseEntity.created(URI.create("/api/users/" + created.getId())).body(created);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody CreateUserDTO dto) {
+	public ResponseEntity<UserDTO> update(@Valid @PathVariable Long id, @RequestBody CreateUserDTO dto) {
 		try {
 			UserDTO updated = userService.update(id, dto);
 			return ResponseEntity.ok(updated);

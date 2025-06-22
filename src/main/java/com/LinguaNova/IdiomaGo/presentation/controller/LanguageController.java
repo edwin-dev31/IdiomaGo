@@ -5,6 +5,7 @@ import com.LinguaNova.IdiomaGo.presentation.dto.language.CreateLanguageDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ILanguageService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,29 +22,35 @@ public class LanguageController {
 	private ILanguageService service;
 
 	@GetMapping
-	public List<LanguageEntity> getAllWords() {
+	public List<LanguageEntity> getAll() {
 		return service.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public LanguageEntity getWordById(@PathVariable Long id) {
+	public LanguageEntity getById(@PathVariable Long id) {
 		return service.getById(id)
 			.orElseThrow(() -> new RuntimeException("Palabra no encontrada con ID: " + id));
 	}
 
 
 	@PostMapping
-	public LanguageEntity createWord(@RequestBody CreateLanguageDTO lang) {
+	public LanguageEntity save(@RequestBody CreateLanguageDTO lang) {
 		return service.save(lang);
 	}
 
+	@PostMapping("/import-languages")
+	public ResponseEntity<String> importLanguages() {
+		service.importLanguages();
+		return ResponseEntity.ok("Languages imported successfully");
+	}
+
 	@PutMapping("/{id}")
-	public LanguageEntity updateWord(@PathVariable Long id, @RequestBody LanguageEntity lang) {
+	public LanguageEntity update(@PathVariable Long id, @RequestBody LanguageEntity lang) {
 		return service.update(id, lang);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteWord(@PathVariable Long id) {
+	public void delete(@PathVariable Long id) {
 		service.delete(id);
 	}
 }

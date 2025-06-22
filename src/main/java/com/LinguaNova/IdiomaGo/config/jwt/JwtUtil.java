@@ -12,16 +12,16 @@ public class JwtUtil {
 	private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	private final long expiration = 3600000;
 
-	public String generateToken(String username) {
+	public String generateToken(String email) {
 		return Jwts.builder()
-			.setSubject(username)
+			.setSubject(email)
 			.setIssuedAt(new Date())
 			.setExpiration(new Date(System.currentTimeMillis() + expiration))
 			.signWith(key)
 			.compact();
 	}
 
-	public String extractUsername(String token) {
+	public String extractEmail(String token) {
 		return Jwts.parserBuilder().setSigningKey(key).build()
 			.parseClaimsJws(token)
 			.getBody()

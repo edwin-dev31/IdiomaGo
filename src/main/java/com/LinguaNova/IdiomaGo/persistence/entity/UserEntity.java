@@ -88,4 +88,5 @@ public class UserEntity {
 		Set<WordTranslationEntity> favorites) {
 		this.favorites = favorites;
 	}
+
 }
