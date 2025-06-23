@@ -57,4 +57,11 @@ public class FavoriteService {
 	public List<FavoriteDTO> getAll() {
 		return repository.findAll().stream().map(mapper::mapTo).toList();
 	}
+
+	public List<FavoriteDTO> getByUserId(Long userId) {
+		UserEntity user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+		return repository.findAllByUserId(userId).stream().map(mapper::mapTo).toList();
+	}
 }

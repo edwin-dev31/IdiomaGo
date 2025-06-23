@@ -1,10 +1,11 @@
 CREATE VIEW view_translations AS
 SELECT
-    wt.id AS translation_id,
     w.id AS word_id,
     w.name AS original_word,
     l.id AS language_id,
+    l.name AS language_name,
     l.code AS language_code,
+    wt.id AS word_Translation_Id,
     wt.translated_word,
     wt.translated_example,
     wt.translated_description,

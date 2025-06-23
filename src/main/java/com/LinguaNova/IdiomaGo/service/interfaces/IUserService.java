@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IUserService {
 	List<UserDTO> getAll();
 	Optional<UserDTO> getById(Long id);
-	Optional<UserDTO> getByUsername(String userName);
+	Optional<UserDTO> getByEmail(String email);
 	UserDTO save(CreateUserDTO word);
 	UserDTO update(Long id, CreateUserDTO word);
 	void delete(Long id);

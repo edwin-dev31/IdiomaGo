@@ -39,4 +39,9 @@ public class FavoriteController {
 	public ResponseEntity<List<FavoriteDTO>> getAll() {
 		return ResponseEntity.ok(service.getAll());
 	}
+
+	@GetMapping("/{userId}")
+	public ResponseEntity<List<FavoriteDTO>> getByUserId(@PathVariable Long userId) {
+		return ResponseEntity.ok(service.getByUserId(userId));
+	}
 }

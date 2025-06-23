@@ -44,8 +44,8 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Optional<UserDTO> getByUsername(String userName) {
-		return repository.findByUsername(userName)
+	public Optional<UserDTO> getByEmail(String userName) {
+		return repository.findByEmail(userName)
 			.map(userMapper::mapTo);
 	}
 

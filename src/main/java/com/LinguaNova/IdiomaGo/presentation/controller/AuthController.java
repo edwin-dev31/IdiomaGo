@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,9 +43,14 @@ public class AuthController {
 		authManager.authenticate(auth);
 
 		var userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+
 		var jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+		Optional<UserDTO> temUser = userService.getByEmail(request.getEmail());
+		Long userId = temUser.get().getId();
+
 		System.out.println(jwt);
-		return ResponseEntity.ok(new AuthResponse(jwt));
+		return ResponseEntity.ok(new AuthResponse(userId, jwt));
 	}
 
 	@PostMapping("/register")
@@ -58,8 +64,11 @@ public class AuthController {
 
 		var userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
 		var jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+		Optional<UserDTO> temUser = userService.getByEmail(dto.getEmail());
+		Long userId = temUser.get().getId();
 		System.out.println(jwt);
-		return ResponseEntity.ok(new AuthResponse(jwt));
+		return ResponseEntity.ok(new AuthResponse(userId, jwt));
 	}
 
 	@PostMapping("/logout")
@@ -68,7 +77,7 @@ public class AuthController {
 		cookie.setHttpOnly(true);
 		cookie.setSecure(false);
 		cookie.setPath("/");
-		cookie.setMaxAge(0); // Elimina la cookie
+		cookie.setMaxAge(0);
 
 		response.addCookie(cookie);
 		return ResponseEntity.ok(Map.of("message", "Sesión cerrada"));

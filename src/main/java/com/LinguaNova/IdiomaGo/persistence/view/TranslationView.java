@@ -11,12 +11,14 @@ import org.hibernate.annotations.Immutable;
 @Table(name = "view_translations")
 public class TranslationView {
 	@Id
-	private Long translationId;
+	private Long wordTranslationId;
 	private Long wordId;
 	private String originalWord;
 
 	private Long languageId;
+	private String languageName;
 	private String languageCode;
+
 
 	private String translatedWord;
 	private String translatedExample;
@@ -25,9 +27,7 @@ public class TranslationView {
 	private String audioUrl;
 	private LocalDateTime createdAt;
 
-	public Long getTranslationId() {
-		return translationId;
-	}
+
 
 	public Long getWordId() {
 		return wordId;
@@ -40,9 +40,15 @@ public class TranslationView {
 	public Long getLanguageId() {
 		return languageId;
 	}
-
 	public String getLanguageName() {
+		return languageName;
+	}
+	public String getLanguageCode() {
 		return languageCode;
+	}
+
+	public Long getWordTranslationId() {
+		return wordTranslationId;
 	}
 
 	public String getTranslatedWord() {
