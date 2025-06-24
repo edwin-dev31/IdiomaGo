@@ -28,6 +28,10 @@ public class WordTranslationEntity {
 	@JoinColumn(name = "language_id")
 	private LanguageEntity language;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "category_id")
+	private CategoryEntity category;
+
 	@Column(nullable = false)
 	private String translatedWord;
 
@@ -123,5 +127,12 @@ public class WordTranslationEntity {
 	public void setFavoritedBy(
 		Set<UserEntity> favoritedBy) {
 		this.favoritedBy = favoritedBy;
+	}
+	public CategoryEntity getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryEntity category) {
+		this.category = category;
 	}
 }

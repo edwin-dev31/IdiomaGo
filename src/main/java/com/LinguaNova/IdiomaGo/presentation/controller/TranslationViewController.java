@@ -61,18 +61,27 @@ public class TranslationViewController {
 		return ResponseEntity.ok(translationViewService.getAllByLanguage(languageCode));
 	}
 
-	@GetMapping("/with-example")
-	public ResponseEntity<List<TranslationView>> getAllWithExamples() {
-		return ResponseEntity.ok(translationViewService.getAllWithExamples());
+	/*@GetMapping("/search/lang/{lang}")
+	public ResponseEntity<List<TranslationView>> searchByLang(@PathVariable String lang) {
+		return ResponseEntity.ok(translationViewService.searchByLang());
 	}
 
-	@GetMapping("/search-description/{keyword}")
-	public ResponseEntity<List<TranslationView>> searchByDescription(@PathVariable String keyword) {
-		return ResponseEntity.ok(translationViewService.searchByDescription(keyword));
+	@GetMapping("/search/categories/{category}")
+	public ResponseEntity<List<TranslationView>> searchByCategory() {
+		return ResponseEntity.ok(translationViewService.searchByCategory());
 	}
 
-	@GetMapping("/search/{partial}")
-	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
-		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
+	@GetMapping("/search/description/{partial}")
+	public ResponseEntity<List<TranslationView>> searchByDescription(@PathVariable String partial) {
+		return ResponseEntity.ok(translationViewService.searchByDescription(partial));
 	}
+
+	@GetMapping("/search/example/{partial}")
+	public ResponseEntity<List<TranslationView>> searchByPartialExample(@PathVariable String partial) {
+		return ResponseEntity.ok(translationViewService.searchByPartialExample(partial));
+	}
+
+//	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
+//		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
+//	}*/
 }

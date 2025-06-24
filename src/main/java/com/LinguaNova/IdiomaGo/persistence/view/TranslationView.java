@@ -19,7 +19,6 @@ public class TranslationView {
 	private String languageName;
 	private String languageCode;
 
-
 	private String translatedWord;
 	private String translatedExample;
 	private String translatedDescription;
@@ -27,12 +26,9 @@ public class TranslationView {
 	private String audioUrl;
 	private LocalDateTime createdAt;
 
-
-
 	public Long getWordId() {
 		return wordId;
 	}
-
 	public String getOriginalWord() {
 		return originalWord;
 	}
@@ -50,27 +46,21 @@ public class TranslationView {
 	public Long getWordTranslationId() {
 		return wordTranslationId;
 	}
-
 	public String getTranslatedWord() {
 		return translatedWord;
 	}
-
 	public String getTranslatedExample() {
 		return translatedExample;
 	}
-
 	public String getTranslatedDescription() {
 		return translatedDescription;
 	}
-
 	public String getImageUrl() {
 		return imageUrl;
 	}
-
 	public String getAudioUrl() {
 		return audioUrl;
 	}
-
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}

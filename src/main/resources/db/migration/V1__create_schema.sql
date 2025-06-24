@@ -18,10 +18,16 @@ CREATE TABLE IF NOT EXISTS word (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS category (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS word_translation (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     word_id BIGINT NOT NULL,
     language_id BIGINT NOT NULL,
+    category_id BIGINT,
     translated_word VARCHAR(255) NOT NULL,
     translated_example TEXT,
     translated_description TEXT,
@@ -29,7 +35,8 @@ CREATE TABLE IF NOT EXISTS word_translation (
     audio_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (word_id) REFERENCES word(id) ON DELETE CASCADE,
-    FOREIGN KEY (language_id) REFERENCES language(id) ON DELETE CASCADE
+    FOREIGN KEY (language_id) REFERENCES language(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS favorites (

@@ -1,5 +1,6 @@
 package com.LinguaNova.IdiomaGo.presentation.dto.favorite;
 
+
 public class CreateFavoriteDTO {
 	private Long userId;
 	private Long wordTranslationId;

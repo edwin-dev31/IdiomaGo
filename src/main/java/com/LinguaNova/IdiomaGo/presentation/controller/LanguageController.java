@@ -32,7 +32,6 @@ public class LanguageController {
 			.orElseThrow(() -> new RuntimeException("Palabra no encontrada con ID: " + id));
 	}
 
-
 	@PostMapping
 	public LanguageEntity save(@RequestBody CreateLanguageDTO lang) {
 		return service.save(lang);
