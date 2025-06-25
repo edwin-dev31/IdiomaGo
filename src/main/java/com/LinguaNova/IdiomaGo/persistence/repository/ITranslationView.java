@@ -17,7 +17,10 @@ public interface ITranslationView extends JpaRepository<TranslationView, Long> {
 
 	List<TranslationView> findByTranslatedExampleIsNotNull();
 
-	List<TranslationView> findByTranslatedDescriptionContainingIgnoreCase(String keyword);
-
 	List<TranslationView> findByTranslatedWordContainingIgnoreCase(String partialWord);
+
+	List<TranslationView> findByLanguageCodeIgnoreCase(String languageCode);
+	List<TranslationView> findByCategoryId(Long categoryId);
+	List<TranslationView> findByTranslatedDescriptionContainingIgnoreCase(String partial);
+	List<TranslationView> findByTranslatedExampleContainingIgnoreCase(String partial);
 }

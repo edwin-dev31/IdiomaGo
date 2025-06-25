@@ -61,14 +61,14 @@ public class TranslationViewController {
 		return ResponseEntity.ok(translationViewService.getAllByLanguage(languageCode));
 	}
 
-	/*@GetMapping("/search/lang/{lang}")
+	@GetMapping("/search/lang/{lang}")
 	public ResponseEntity<List<TranslationView>> searchByLang(@PathVariable String lang) {
-		return ResponseEntity.ok(translationViewService.searchByLang());
+		return ResponseEntity.ok(translationViewService.searchByLang(lang));
 	}
 
-	@GetMapping("/search/categories/{category}")
-	public ResponseEntity<List<TranslationView>> searchByCategory() {
-		return ResponseEntity.ok(translationViewService.searchByCategory());
+	@GetMapping("/search/categories/{categoryId}")
+	public ResponseEntity<List<TranslationView>> searchByCategory(@PathVariable Long categoryId) {
+		return ResponseEntity.ok(translationViewService.searchByCategory(categoryId));
 	}
 
 	@GetMapping("/search/description/{partial}")
@@ -81,7 +81,7 @@ public class TranslationViewController {
 		return ResponseEntity.ok(translationViewService.searchByPartialExample(partial));
 	}
 
-//	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
-//		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
-//	}*/
+	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
+		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
+	}
 }

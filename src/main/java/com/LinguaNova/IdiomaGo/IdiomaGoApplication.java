@@ -9,5 +9,4 @@ public class IdiomaGoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(IdiomaGoApplication.class, args);
 	}
-
 }

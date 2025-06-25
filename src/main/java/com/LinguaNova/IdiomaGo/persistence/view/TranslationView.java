@@ -19,6 +19,9 @@ public class TranslationView {
 	private String languageName;
 	private String languageCode;
 
+	private Long categoryId;
+	private String categoryName;
+
 	private String translatedWord;
 	private String translatedExample;
 	private String translatedDescription;
@@ -63,6 +66,18 @@ public class TranslationView {
 	}
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }
 

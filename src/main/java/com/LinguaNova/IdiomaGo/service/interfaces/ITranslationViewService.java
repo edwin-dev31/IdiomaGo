@@ -13,7 +13,9 @@ public interface ITranslationViewService {
 	List<TranslationView> searchAllViews(String query, String languageCode);
 	List<TranslationView> getAllByWord(String word);
 	List<TranslationView> getAllByLanguage(String languageCode);
-	List<TranslationView> getAllWithExamples();
-	List<TranslationView> searchByDescription(String keyword);
-	List<TranslationView> searchByPartialWord(String partialWord);
+	List<TranslationView> searchByLang(String lang);
+	List<TranslationView> searchByCategory(long categoryId);
+	List<TranslationView> searchByDescription(String partial);
+	List<TranslationView> searchByPartialExample(String partial);
+	List<TranslationView> searchByPartialWord(String partial);
 }
