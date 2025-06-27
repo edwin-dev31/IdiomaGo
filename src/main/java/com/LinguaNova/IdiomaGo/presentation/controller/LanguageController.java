@@ -37,7 +37,7 @@ public class LanguageController {
 		return service.save(lang);
 	}
 
-	@PostMapping("/import-languages")
+	@PostMapping("/import")
 	public ResponseEntity<String> importLanguages() {
 		service.importLanguages();
 		return ResponseEntity.ok("Languages imported successfully");
