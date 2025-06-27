@@ -1,12 +1,14 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
 import com.LinguaNova.IdiomaGo.persistence.view.TranslationView;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveSingleWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ITranslationViewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/view")
@@ -16,7 +18,7 @@ public class TranslationViewController {
 
 	public TranslationViewController(ITranslationViewService translationViewService) {
 		this.translationViewService = translationViewService;
-	}
+    }
 
 	@GetMapping()
 	public ResponseEntity<List<TranslationView>> findAll(){
@@ -33,23 +35,31 @@ public class TranslationViewController {
 			.orElse(ResponseEntity.notFound().build());
 	}
 
-	@GetMapping("/search/lang")
-	public ResponseEntity<?> searchByWordAndLanguages(
+	@GetMapping("/save/word/multiple")
+	public ResponseEntity<?> saveMultipleWords(
 			@RequestParam String word,
+			@RequestParam Long category,
 			@RequestParam List<String> codes
 	) {
 		List<TranslationView> results = codes.stream()
-				.map(code -> translationViewService.getOrCreateTranslation(word, code))
+				.map(code -> translationViewService.saveMultipleWords(word, code, category))
 				.flatMap(List::stream)
 				.toList();
 
 		if (results.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No translations found.");
 		}
-
 		return ResponseEntity.ok(results);
 	}
 
+	@PostMapping("/save/word/single")
+	public ResponseEntity<?> saveSingleWords(@RequestBody SaveSingleWordTranslationDTO newTranslation) {
+		List<TranslationView> result = translationViewService.saveSingleWords(newTranslation);
+		if (result == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No translations found.");
+		}
+		return ResponseEntity.ok(result);
+	}
 
 	@GetMapping("/word/{word}")
 	public ResponseEntity<List<TranslationView>> getAllByWord(@PathVariable String word) {
@@ -84,4 +94,18 @@ public class TranslationViewController {
 	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
 		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
 	}
+
+	@PostMapping("/images/import")
+	public ResponseEntity<String> importImages(){
+		translationViewService.importImages();
+		return ResponseEntity.ok("Images imported successfully");
+	}
+
+	@PostMapping("/images/change/{wordTranslationId}")
+	public ResponseEntity<Map<String, String>> changeImages(@PathVariable Long wordTranslationId) {
+		String newUrl = translationViewService.changeImages(wordTranslationId);
+		return ResponseEntity.ok(Map.of("message", newUrl));
+	}
+
+
 }

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IWordTransalationRepository extends JpaRepository<WordTranslationEntity, Long> {
 	List<WordTranslationEntity> findBylanguage_Id(Long languageId);
-
+	boolean existsByWordIdAndLanguageId(Long wordId, Long languageId);
 }

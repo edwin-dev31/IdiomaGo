@@ -1,10 +1,11 @@
 package com.LinguaNova.IdiomaGo.service.impl;
 
 import com.LinguaNova.IdiomaGo.external.images.UnsplashService;
+import com.LinguaNova.IdiomaGo.external.words.AIWordTranslationService;
 import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationEntity;
-import com.LinguaNova.IdiomaGo.persistence.repository.ITranslationView;
-import com.LinguaNova.IdiomaGo.persistence.repository.IWordTransalationRepository;
+import com.LinguaNova.IdiomaGo.persistence.repository.*;
 import com.LinguaNova.IdiomaGo.persistence.view.TranslationView;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveSingleWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ITranslationViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,17 +19,20 @@ public class TranslationViewService implements ITranslationViewService {
 
 	private final ITranslationView repository;
 	private final IWordTransalationRepository iWordTransalationRepository;
+
+	@Autowired
+	private AIWordTranslationService aiWordTranslationService;
 	@Autowired
 	private UnsplashService unsplashService;
 
-	public TranslationViewService(ITranslationView translationViewRepository, IWordTransalationRepository iWordTransalationRepository) {
+	public TranslationViewService(ITranslationView translationViewRepository,
+	  		IWordTransalationRepository iWordTransalationRepository ) {
 		this.repository = translationViewRepository;
-        this.iWordTransalationRepository = iWordTransalationRepository;
+		this.iWordTransalationRepository = iWordTransalationRepository;
     }
 
 	@Override
 	public List<TranslationView> findAll() {
-		checkItemsImages();
 		return repository.findAll();
 	}
 
@@ -37,33 +41,25 @@ public class TranslationViewService implements ITranslationViewService {
 		return repository.findByTranslatedWordAndLanguageCode(word, languageCode);
 	}
 
-	public List<TranslationView> getOrCreateTranslation(String word, String languageCode) {
+	@Override
+	public List<TranslationView> saveMultipleWords(String word, String languageCode, Long categoryId) {
 		List<TranslationView> results = searchAllViews(word, languageCode);
-		if (!results.isEmpty()) {
-			return results;
-		}
+		if (!results.isEmpty()) return results;
 
-		// Paso 2: Obtener wordId desde original o traducida
-		Optional<Long> wordIdOpt = findWordIdByWord(word);
-		if (wordIdOpt.isEmpty()) {
-			return List.of(); // No existe ni como traducción ni como original
-		}
+		String imageUrl = UnsplashService.getImageUrlForWord(word);
+		WordTranslationEntity saved = aiWordTranslationService.saveMultipleWordsIA(word, languageCode, categoryId, imageUrl);
 
-		Long wordId = wordIdOpt.get();
-
-//		TranslationView aiTranslation = generateTranslationWithAI(wordId, word, languageCode);
-//		if (aiTranslation == null) {
-//			return List.of();
-//		}
-
-		// Paso 4: Guardar en la base de datos
-//		saveTranslation(aiTranslation);
-
-		// Paso 5: Buscar y devolver el nuevo resultado
 		return searchAllViews(word, languageCode);
 	}
 
+	@Override
+	public List<TranslationView> saveSingleWords(SaveSingleWordTranslationDTO newTranslation){
+		WordTranslationEntity saved = aiWordTranslationService.saveSingleWords(newTranslation);
 
+		return searchAllViews(newTranslation.getWord(), newTranslation.getLanguageCode());
+	};
+
+	@Override
 	public List<TranslationView> searchAllViews(String query, String languageCode) {
 		List<TranslationView> matches = getAllByWord(query);
 
@@ -126,11 +122,12 @@ public class TranslationViewService implements ITranslationViewService {
 		return UnsplashService.getImageUrlForWord(word);
 	}
 
-	private void checkItemsImages() {
-		List<TranslationView> traslations = repository.findAll();
-		List<WordTranslationEntity> temTraslations = new ArrayList<>();
+	@Override
+	public void importImages() {
+		List<TranslationView> translations = repository.findAll();
+		List<WordTranslationEntity> temTranslation = new ArrayList<>();
 
-		for (TranslationView item : traslations) {
+		for (TranslationView item : translations) {
 			if (item.getImageUrl() == null || item.getImageUrl().isBlank()) {
 				Long wordTranslationId = item.getWordTranslationId();
 				Optional<WordTranslationEntity> temWord = iWordTransalationRepository.findById(wordTranslationId);
@@ -139,12 +136,31 @@ public class TranslationViewService implements ITranslationViewService {
 					String word = wordTranslation.getWord().getName();
 					String generatedUrl = searchImage(word);
 					wordTranslation.setImageUrl(generatedUrl);
-					temTraslations.add(wordTranslation);
+					temTranslation.add(wordTranslation);
 				});
 			}
 		}
 
-		iWordTransalationRepository.saveAll(temTraslations);
+		iWordTransalationRepository.saveAll(temTranslation);
 	}
+
+	@Override
+	public String changeImages(Long wordTranslationId) {
+		Optional<WordTranslationEntity> temWord = iWordTransalationRepository.findById(wordTranslationId);
+
+		if (temWord.isPresent()) {
+			WordTranslationEntity wordTranslation = temWord.get();
+			String word = wordTranslation.getWord().getName();
+			String generatedUrl = searchImage(word);
+
+			wordTranslation.setImageUrl(generatedUrl);
+			iWordTransalationRepository.save(wordTranslation);
+
+			return generatedUrl;
+		}
+		return null;
+	}
+
+
 
 }

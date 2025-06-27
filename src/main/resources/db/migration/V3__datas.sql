@@ -42,25 +42,25 @@ INSERT INTO word_translation (word_id, language_id, category_id, translated_word
 
 -- Palabra: libro
 INSERT INTO word_translation (word_id, language_id, category_id, translated_word, translated_example, translated_description) VALUES
-(3, 1, 2, 'libro', 'Estoy leyendo un libro.', 'Conjunto de hojas impresas encuadernadas.'),
-(3, 2, 2, 'book', 'I am reading a book.', 'Collection of printed pages bound together.'),
-(3, 3, 2, 'livro', 'Estou lendo um livro.', 'Conjunto de folhas impressas encadernadas.'),
-(3, 4, 2, 'livre', 'Je lis un livre.', 'Ensemble de feuilles imprimées reliées.'),
-(3, 5, 2, 'Buch', 'Ich lese ein Buch.', 'Sammlung gedruckter Seiten, gebunden.');
+(3, 1, 3, 'libro', 'Estoy leyendo un libro.', 'Conjunto de hojas impresas encuadernadas.'),
+(3, 2, 3, 'book', 'I am reading a book.', 'Collection of printed pages bound together.'),
+(3, 3, 3, 'livro', 'Estou lendo um livro.', 'Conjunto de folhas impressas encadernadas.'),
+(3, 4, 3, 'livre', 'Je lis un livre.', 'Ensemble de feuilles imprimées reliées.'),
+(3, 5, 3, 'Buch', 'Ich lese ein Buch.', 'Sammlung gedruckter Seiten, gebunden.');
 
 -- Palabra: perro
 INSERT INTO word_translation (word_id, language_id, category_id, translated_word, translated_example, translated_description) VALUES
-(4, 1, 3, 'perro', 'Mi perro es muy juguetón.', 'Animal doméstico, fiel y amigable.'),
-(4, 2, 3, 'dog', 'My dog is very playful.', 'Domestic animal, loyal and friendly.'),
-(4, 3, 3, 'cão', 'Meu cão é muito brincalhão.', 'Animal doméstico, leal e amigável.'),
-(4, 4, 3, 'chien', 'Mon chien est très joueur.', 'Animal domestique, fidèle et amical.'),
-(4, 5, 3, 'Hund', 'Mein Hund ist sehr verspielt.', 'Haustier, treu und freundlich.');
+(4, 1, 4, 'perro', 'Mi perro es muy juguetón.', 'Animal doméstico, fiel y amigable.'),
+(4, 2, 4, 'dog', 'My dog is very playful.', 'Domestic animal, loyal and friendly.'),
+(4, 3, 4, 'cão', 'Meu cão é muito brincalhão.', 'Animal doméstico, leal e amigável.'),
+(4, 4, 4, 'chien', 'Mon chien est très joueur.', 'Animal domestique, fidèle et amical.'),
+(4, 5, 4, 'Hund', 'Mein Hund ist sehr verspielt.', 'Haustier, treu und freundlich.');
 
 -- Palabra: casa
 INSERT INTO word_translation (word_id, language_id, category_id, translated_word, translated_example, translated_description) VALUES
-(5, 1, 4, 'casa', 'Mi casa tiene un jardín.', 'Edificio donde vive una persona o familia.'),
-(5, 2, 4, 'house', 'My house has a garden.', 'Building where a person or family lives.'),
-(5, 3, 4, 'casa', 'Minha casa tem um jardim.', 'Edifício onde vive uma pessoa ou família.'),
-(5, 4, 4, 'maison', 'Ma maison a un jardin.', 'Bâtiment où vit une personne ou une famille.'),
-(5, 5, 4, 'Haus', 'Mein Haus hat einen Garten.', 'Gebäude, in dem eine Person oder Familie lebt.');
+(5, 1, 5, 'casa', 'Mi casa tiene un jardín.', 'Edificio donde vive una persona o familia.'),
+(5, 2, 5, 'house', 'My house has a garden.', 'Building where a person or family lives.'),
+(5, 3, 5, 'casa', 'Minha casa tem um jardim.', 'Edifício onde vive uma pessoa ou família.'),
+(5, 4, 5, 'maison', 'Ma maison a un jardin.', 'Bâtiment où vit une personne ou une famille.'),
+(5, 5, 5, 'Haus', 'Mein Haus hat einen Garten.', 'Gebäude, in dem eine Person oder Familie lebt.');
 
