@@ -28,7 +28,7 @@ public class OpenAIService {
         -Language: "%s"
         Returns only a JSON with the following fields:
         {
-          "word": "...",
+          "translation": "...",
           "example": "...",
           "description": "..."
         }
@@ -62,10 +62,9 @@ public class OpenAIService {
                         .getJSONObject("message")
                         .getString("content");
 
-                // Parsear el JSON devuelto por la IA
                 JSONObject parsed = new JSONObject(content);
                 return new IAResponse(
-                        parsed.optString("word"),
+                        parsed.optString("translation"),
                         parsed.optString("example"),
                         parsed.optString("description")
                 );

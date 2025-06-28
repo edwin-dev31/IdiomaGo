@@ -22,9 +22,9 @@ import java.util.List;
 public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthFilter;
-	private CustomOAuth2SuccessHandler oAuth2SuccessHandler;
+	private OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
 
-	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CustomOAuth2SuccessHandler oAuth2SuccessHandler) {
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler) {
 		this.jwtAuthFilter = jwtAuthFilter;
 		this.oAuth2SuccessHandler = oAuth2SuccessHandler;
 	}

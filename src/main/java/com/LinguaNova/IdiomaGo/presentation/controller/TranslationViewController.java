@@ -1,8 +1,11 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
 import com.LinguaNova.IdiomaGo.persistence.view.TranslationView;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.CreateMultipleWordTranslationDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveMultipleWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveSingleWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ITranslationViewService;
+import com.LinguaNova.IdiomaGo.util.Visibility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,24 +28,27 @@ public class TranslationViewController {
 		return (ResponseEntity.ok(translationViewService.findAll()));
 	}
 
-	@GetMapping("/{word}/language/{languageCode}")
-	public ResponseEntity<TranslationView> getByWordAndLanguage(
-		@PathVariable String word,
-		@PathVariable String languageCode
-	) {
-		return translationViewService.getByWordAndLanguage(word, languageCode)
-			.map(ResponseEntity::ok)
-			.orElse(ResponseEntity.notFound().build());
+	@GetMapping("/favorite")
+	public ResponseEntity<List<TranslationView>> findToFavorite(){
+		return (ResponseEntity.ok(translationViewService.findToFavorite()));
 	}
 
-	@GetMapping("/save/word/multiple")
-	public ResponseEntity<?> saveMultipleWords(
-			@RequestParam String word,
-			@RequestParam Long category,
-			@RequestParam List<String> codes
+	@GetMapping("/my-words/{userId}")
+	public ResponseEntity<List<TranslationView>> myWords(
+			@PathVariable Long userId
 	) {
-		List<TranslationView> results = codes.stream()
-				.map(code -> translationViewService.saveMultipleWords(word, code, category))
+		return ResponseEntity.ok(translationViewService.findByUser(userId));
+	}
+
+	@PostMapping("/save/word/multiple")
+	public ResponseEntity<?> saveMultipleWords(@RequestBody CreateMultipleWordTranslationDTO dto) {
+		List<TranslationView> results = dto.getLanguageCodes().stream()
+				.map(code -> {
+					SaveMultipleWordTranslationDTO singleDTO = new SaveMultipleWordTranslationDTO(
+							dto.getUserId(), dto.getWord(), code, dto.getCategoryId()
+					);
+					return translationViewService.saveMultipleWords(singleDTO);
+				})
 				.flatMap(List::stream)
 				.toList();
 
@@ -51,6 +57,7 @@ public class TranslationViewController {
 		}
 		return ResponseEntity.ok(results);
 	}
+
 
 	@PostMapping("/save/word/single")
 	public ResponseEntity<?> saveSingleWords(@RequestBody SaveSingleWordTranslationDTO newTranslation) {
@@ -106,6 +113,4 @@ public class TranslationViewController {
 		String newUrl = translationViewService.changeImages(wordTranslationId);
 		return ResponseEntity.ok(Map.of("message", newUrl));
 	}
-
-
 }

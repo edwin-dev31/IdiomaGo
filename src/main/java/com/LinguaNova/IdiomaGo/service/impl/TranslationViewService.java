@@ -5,8 +5,11 @@ import com.LinguaNova.IdiomaGo.external.words.AIWordTranslationService;
 import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.*;
 import com.LinguaNova.IdiomaGo.persistence.view.TranslationView;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveMultipleWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveSingleWordTranslationDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.WordTranslationDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.ITranslationViewService;
+import com.LinguaNova.IdiomaGo.util.Visibility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,13 @@ public class TranslationViewService implements ITranslationViewService {
 
 	@Override
 	public List<TranslationView> findAll() {
+		return repository.findAll().stream()
+				.filter(e -> e.getVisibility() == Visibility.PUBLIC)
+				.toList();
+	}
+
+	@Override
+	public List<TranslationView> findToFavorite() {
 		return repository.findAll();
 	}
 
@@ -42,14 +52,16 @@ public class TranslationViewService implements ITranslationViewService {
 	}
 
 	@Override
-	public List<TranslationView> saveMultipleWords(String word, String languageCode, Long categoryId) {
-		List<TranslationView> results = searchAllViews(word, languageCode);
+	public List<TranslationView> saveMultipleWords(SaveMultipleWordTranslationDTO newMultipleTranslation) {
+		List<TranslationView> results = searchAllViews(newMultipleTranslation.getWord(), newMultipleTranslation.getLanguageCode());
 		if (!results.isEmpty()) return results;
 
-		String imageUrl = UnsplashService.getImageUrlForWord(word);
-		WordTranslationEntity saved = aiWordTranslationService.saveMultipleWordsIA(word, languageCode, categoryId, imageUrl);
+		SaveMultipleWordTranslationDTO multiple =
+			new SaveMultipleWordTranslationDTO(newMultipleTranslation.getUserId(), newMultipleTranslation.getWord(),
+					newMultipleTranslation.getLanguageCode(), newMultipleTranslation.getCategoryId());
+		WordTranslationEntity saved = aiWordTranslationService.saveMultipleWordsIA(multiple);
 
-		return searchAllViews(word, languageCode);
+		return searchAllViews(newMultipleTranslation.getWord(), newMultipleTranslation.getLanguageCode());
 	}
 
 	@Override
@@ -161,6 +173,8 @@ public class TranslationViewService implements ITranslationViewService {
 		return null;
 	}
 
-
-
+	@Override
+	public List<TranslationView> findByUser(Long userId) {
+		return repository.findByUserId(userId);
+	}
 }

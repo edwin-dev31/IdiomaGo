@@ -1,7 +1,9 @@
 package com.LinguaNova.IdiomaGo.service.interfaces;
 
 import com.LinguaNova.IdiomaGo.persistence.view.TranslationView;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveMultipleWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.SaveSingleWordTranslationDTO;
+import com.LinguaNova.IdiomaGo.util.Visibility;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +12,9 @@ public interface ITranslationViewService {
 	Optional<TranslationView> getByWordAndLanguage(String word, String languageCode);
 
 	List<TranslationView> findAll();
-	List<TranslationView> saveMultipleWords(String word, String languageCode, Long category);
+	List<TranslationView> findToFavorite();
+	List<TranslationView> findByUser(Long userId);
+	List<TranslationView> saveMultipleWords(SaveMultipleWordTranslationDTO newMultipleTranslation);
 	List<TranslationView> saveSingleWords(SaveSingleWordTranslationDTO newTranslation);
 	List<TranslationView> searchAllViews(String query, String languageCode);
 	List<TranslationView> getAllByWord(String word);

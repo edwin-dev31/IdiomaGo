@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS word_translation (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT,
     word_id BIGINT NOT NULL,
     language_id BIGINT NOT NULL,
     category_id BIGINT,
@@ -33,11 +34,14 @@ CREATE TABLE IF NOT EXISTS word_translation (
     translated_description TEXT,
     image_url VARCHAR(255),
     audio_url VARCHAR(255),
+    visibility VARCHAR(10) NOT NULL DEFAULT 'PUBLIC',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (word_id) REFERENCES word(id) ON DELETE CASCADE,
     FOREIGN KEY (language_id) REFERENCES language(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET NULL
 );
+
 
 CREATE TABLE IF NOT EXISTS favorites (
     user_id BIGINT NOT NULL,

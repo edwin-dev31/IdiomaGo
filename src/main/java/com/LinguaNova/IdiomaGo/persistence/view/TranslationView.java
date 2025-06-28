@@ -1,8 +1,8 @@
 package com.LinguaNova.IdiomaGo.persistence.view;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.LinguaNova.IdiomaGo.util.Visibility;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Immutable;
 
@@ -12,6 +12,7 @@ import org.hibernate.annotations.Immutable;
 public class TranslationView {
 	@Id
 	private Long wordTranslationId;
+	private Long userId;
 	private Long wordId;
 	private String originalWord;
 
@@ -27,6 +28,10 @@ public class TranslationView {
 	private String translatedDescription;
 	private String imageUrl;
 	private String audioUrl;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 10)
+	private Visibility visibility;
 	private LocalDateTime createdAt;
 
 	public Long getWordId() {
@@ -68,6 +73,14 @@ public class TranslationView {
 		return createdAt;
 	}
 
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public Long getCategoryId() {
 		return categoryId;
 	}
@@ -78,6 +91,14 @@ public class TranslationView {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public Visibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
 	}
 }
 

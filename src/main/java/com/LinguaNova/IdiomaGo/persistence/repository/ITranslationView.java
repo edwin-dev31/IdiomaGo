@@ -3,10 +3,13 @@ package com.LinguaNova.IdiomaGo.persistence.repository;
 import com.LinguaNova.IdiomaGo.persistence.view.TranslationView;
 import java.util.List;
 import java.util.Optional;
+
+import com.LinguaNova.IdiomaGo.util.Visibility;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ITranslationView extends JpaRepository<TranslationView, Long> {
 
+	List<TranslationView> findByUserId(Long userId);
 	Optional<TranslationView> findByTranslatedWordAndLanguageCode(String word, String languageCode);
 
 	List<TranslationView> findByWordIdAndLanguageCode(Long wordId, String languageCode);

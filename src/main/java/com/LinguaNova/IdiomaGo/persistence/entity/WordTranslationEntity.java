@@ -1,14 +1,8 @@
 package com.LinguaNova.IdiomaGo.persistence.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.LinguaNova.IdiomaGo.util.Visibility;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +13,10 @@ public class WordTranslationEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private UserEntity user;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "word_id")
@@ -43,17 +41,30 @@ public class WordTranslationEntity {
 
 	private String audioUrl;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 10)
+	private Visibility visibility;
+
+
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToMany(mappedBy = "favorites")
 	private Set<UserEntity> favoritedBy = new HashSet<>();
 
-	public Long  getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long  id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 	public WordEntity getWord() {
@@ -68,8 +79,16 @@ public class WordTranslationEntity {
 		return language;
 	}
 
-	public void setLanguage(LanguageEntity languageEntity) {
-		this.language = languageEntity;
+	public void setLanguage(LanguageEntity language) {
+		this.language = language;
+	}
+
+	public CategoryEntity getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryEntity category) {
+		this.category = category;
 	}
 
 	public String getTranslatedWord() {
@@ -112,6 +131,15 @@ public class WordTranslationEntity {
 		this.audioUrl = audioUrl;
 	}
 
+	public Visibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -124,15 +152,7 @@ public class WordTranslationEntity {
 		return favoritedBy;
 	}
 
-	public void setFavoritedBy(
-		Set<UserEntity> favoritedBy) {
+	public void setFavoritedBy(Set<UserEntity> favoritedBy) {
 		this.favoritedBy = favoritedBy;
-	}
-	public CategoryEntity getCategory() {
-		return category;
-	}
-
-	public void setCategory(CategoryEntity category) {
-		this.category = category;
 	}
 }

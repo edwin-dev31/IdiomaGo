@@ -1,6 +1,7 @@
 CREATE OR REPLACE VIEW view_translations AS
 SELECT
     w.id AS word_id,
+    wt.user_id,
     w.name AS original_word,
     l.id AS language_id,
     l.name AS language_name,
@@ -12,6 +13,7 @@ SELECT
     wt.image_url,
     wt.audio_url,
     wt.created_at,
+    wt.visibility,
     c.id AS category_id,
     c.name AS category_name
 FROM word_translation wt
