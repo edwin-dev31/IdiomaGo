@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		System.out.println("Searching user in DB: " + email + "nOY");
+		System.out.println("Searching user in DB: " + email + " nOY");
 
 		UserEntity userEntity = userRepository.findByEmail(email)
 			.orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));

@@ -40,6 +40,7 @@ public class SecurityConfig {
 				request.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
 				request.requestMatchers(HttpMethod.POST, "/api/users").permitAll();
 				request.requestMatchers(HttpMethod.GET, "/oauth2/**").permitAll();
+				request.requestMatchers(HttpMethod.GET, "/auth/verify-email**").permitAll();
 				request.anyRequest().authenticated();
 			})
 			.formLogin(Customizer.withDefaults())

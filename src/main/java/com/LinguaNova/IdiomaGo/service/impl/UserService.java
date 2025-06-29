@@ -44,17 +44,14 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Optional<UserDTO> getByEmail(String userName) {
-		return repository.findByEmail(userName)
-			.map(userMapper::mapTo);
+	public Optional<UserEntity> getByEmail(String userName) {
+		return repository.findByEmail(userName);
 	}
 
 	@Override
 	public UserDTO save(CreateUserDTO dto) {
 		UserEntity entity = createUserMapper.mapFrom(dto);
-		if (repository.findByUsername(dto.getUsername()).isPresent()){
-			throw new DuplicateResourceException("Username already exists: " + dto.getUsername());
-		}
+
 		if (repository.findByEmail(dto.getEmail()).isPresent()){
 			throw new DuplicateResourceException("Email already exists: " + dto.getEmail());
 		}
@@ -64,17 +61,32 @@ public class UserService implements IUserService {
 		return userMapper.mapTo(saved);
 	}
 
+
 	@Override
-	public UserDTO update(Long id, CreateUserDTO dto) {
-		return repository.findById(id)
-			.map(user -> {
-				user.setUsername(dto.getUsername());
-				user.setEmail(dto.getEmail());
-				user.setPassword(passwordEncoder.encode(dto.getPassword()));
-				UserEntity updated = repository.save(user);
-				return userMapper.mapTo(updated);
-			})
-			.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+	public UserDTO update(UserEntity user) {
+		return repository.findById(user.getId())
+				.map(existing -> {
+					if (user.getUsername() != null && !user.getUsername().isBlank()) {
+						existing.setUsername(user.getUsername());
+					}
+
+					if (user.getEmail() != null && !user.getEmail().isBlank()) {
+						existing.setEmail(user.getEmail());
+					}
+
+					if (user.getPassword() != null && !user.getPassword().isBlank()) {
+						existing.setPassword(user.getPassword());
+					}
+
+					if (user.getVerified() != null) {
+						existing.setVerified(user.getVerified());
+					}
+
+					UserEntity updated = repository.save(existing);
+					return userMapper.mapTo(updated);
+				})
+				.orElseThrow(() ->
+						new ResourceNotFoundException("User not found with id: " + user.getId()));
 	}
 
 	@Override

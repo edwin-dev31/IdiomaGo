@@ -1,5 +1,6 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
+import com.LinguaNova.IdiomaGo.persistence.entity.UserEntity;
 import com.LinguaNova.IdiomaGo.presentation.dto.user.CreateUserDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
@@ -40,9 +41,9 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> update(@Valid @PathVariable Long id, @RequestBody CreateUserDTO dto) {
+	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserEntity user) {
 		try {
-			UserDTO updated = userService.update(id, dto);
+			UserDTO updated = userService.update(user);
 			return ResponseEntity.ok(updated);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();

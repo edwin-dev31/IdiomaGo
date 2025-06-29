@@ -8,7 +8,7 @@ public class UserDTO {
 	private String password;
 	private String email;
 	private LocalDateTime createdAt;
-
+	private Boolean verified;
 	public Long getId() {
 		return id;
 	}
@@ -49,4 +49,11 @@ public class UserDTO {
 		this.createdAt = createdAt;
 	}
 
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
 }

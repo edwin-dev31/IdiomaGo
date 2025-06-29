@@ -20,7 +20,7 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String username;
 
 	@Column(nullable = false)
@@ -31,6 +31,9 @@ public class UserEntity {
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
+
+	@Column(nullable = false)
+	private Boolean verified = false;
 
 	@ManyToMany
 	@JoinTable(
@@ -88,5 +91,13 @@ public class UserEntity {
 		Set<WordTranslationEntity> favorites) {
 		this.favorites = favorites;
 	}
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+
 
 }
