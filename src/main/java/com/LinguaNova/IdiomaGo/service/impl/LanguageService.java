@@ -50,7 +50,7 @@ public class LanguageService implements ILanguageService {
 			.map(word -> {
 				word.setName(langDetails.getName());
 				return repository.save(word);
-			}).orElseThrow(() -> new RuntimeException("Idioma no encontrado con ID: " + id));
+			}).orElseThrow(() -> new RuntimeException("Language not found with ID: " + id));
 	}
 
 	@Override

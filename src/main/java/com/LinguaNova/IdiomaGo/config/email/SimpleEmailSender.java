@@ -26,7 +26,7 @@ public class SimpleEmailSender extends AbstractEmailSender {
 			message.setContent(content, "text/html; charset=utf-8");
 			sendMessage(message);
 		} catch (Exception e) {
-			System.out.println("Error al enviar el correo: " + e.getMessage());
+			System.out.println("Error to send email: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

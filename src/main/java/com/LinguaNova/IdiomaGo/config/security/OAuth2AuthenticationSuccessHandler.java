@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.LinguaNova.IdiomaGo.util.AppRoutes.FRONTEND_REDIRECTION_URL;
+
 @Component
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -69,7 +71,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         Long userId = userService.getByEmail(email).get().getId();
 
         String jwt = jwtUtil.generateToken(email);
-        String redirectUrl = "http://localhost:5173/oauth2/success?token=" + jwt + "&userId=" + userId;
+        String redirectUrl = FRONTEND_REDIRECTION_URL + jwt + "&userId=" + userId;
 
         response.sendRedirect(redirectUrl);
     }

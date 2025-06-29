@@ -47,11 +47,6 @@ public class TranslationViewService implements ITranslationViewService {
 	}
 
 	@Override
-	public Optional<TranslationView> getByWordAndLanguage(String word, String languageCode) {
-		return repository.findByTranslatedWordAndLanguageCode(word, languageCode);
-	}
-
-	@Override
 	public List<TranslationView> saveMultipleWords(SaveMultipleWordTranslationDTO newMultipleTranslation) {
 		List<TranslationView> results = searchAllViews(newMultipleTranslation.getWord(), newMultipleTranslation.getLanguageCode());
 		if (!results.isEmpty()) return results;
@@ -85,14 +80,6 @@ public class TranslationViewService implements ITranslationViewService {
 
 		Long wordId = matches.get(0).getWordId();
 		return repository.findByWordIdAndLanguageCode(wordId, languageCode);
-	}
-
-	public Optional<Long> findWordIdByWord(String query) {
-		List<TranslationView> matches = repository.findByTranslatedWordIgnoreCaseOrderByLanguageCode(query);
-		if (matches.isEmpty()) {
-			matches = repository.findByOriginalWordIgnoreCaseOrderByLanguageCode(query);
-		}
-		return matches.isEmpty() ? Optional.empty() : Optional.of(matches.get(0).getWordId());
 	}
 
 	@Override

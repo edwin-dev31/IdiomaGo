@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITranslationViewService {
-	Optional<TranslationView> getByWordAndLanguage(String word, String languageCode);
-
 	List<TranslationView> findAll();
 	List<TranslationView> findToFavorite();
 	List<TranslationView> findByUser(Long userId);

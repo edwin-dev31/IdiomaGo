@@ -105,7 +105,7 @@ public class WordTranslationService implements IWordTranslationService {
 
 	@Override
 	public List<WordTranslationDTO> getByLangId(Long langId) {
-		List<WordTranslationEntity> list = repository.findBylanguage_Id(langId);
+		List<WordTranslationEntity> list = repository.findBylanguageId(langId);
 		return mapper.mapToList(list);
 	}
 

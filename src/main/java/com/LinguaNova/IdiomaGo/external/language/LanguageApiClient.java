@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.LinguaNova.IdiomaGo.util.AppRoutes.LANGUAGE_BASE_URL;
+
 @Component
 public class LanguageApiClient {
 
@@ -17,9 +19,8 @@ public class LanguageApiClient {
     }
 
     public List<Map<String, String>> fetchLanguagesFromExternalApi() {
-        String apiUrl = "https://libretranslate.com/languages";
 
-        List<Map<String, Object>> response = restTemplate.getForObject(apiUrl, List.class);
+        List<Map<String, Object>> response = restTemplate.getForObject(LANGUAGE_BASE_URL, List.class);
 
         return response.stream()
                 .map(lang -> Map.of(

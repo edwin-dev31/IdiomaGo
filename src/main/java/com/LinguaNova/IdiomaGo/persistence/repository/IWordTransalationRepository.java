@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IWordTransalationRepository extends JpaRepository<WordTranslationEntity, Long> {
-	List<WordTranslationEntity> findBylanguage_Id(Long languageId);
+	List<WordTranslationEntity> findBylanguageId(Long languageId);
 	boolean existsByWordIdAndLanguageId(Long wordId, Long languageId);
 	List<WordTranslationEntity> findByUserIdAndVisibility(Long userId, Visibility visibility);
 }

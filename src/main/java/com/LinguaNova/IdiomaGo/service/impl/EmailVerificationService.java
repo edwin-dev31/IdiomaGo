@@ -18,7 +18,7 @@ public class EmailVerificationService {
     }
 
     public void sendVerificationEmail(String to, String userName, String token) {
-        String subject = "Confirma tu cuenta en IdiomaGo";
+        String subject = "Confirm your account in IdiomaGo";
         String content = emailTemplateService.buildVerificationEmail(userName, token);
         emailSender.sendEmail(to, subject, content);
     }

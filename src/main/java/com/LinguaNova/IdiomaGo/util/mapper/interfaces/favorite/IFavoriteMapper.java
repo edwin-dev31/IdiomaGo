@@ -1,7 +1,6 @@
 package com.LinguaNova.IdiomaGo.util.mapper.interfaces.favorite;
 
 import com.LinguaNova.IdiomaGo.persistence.entity.FavoriteEntity;
-import com.LinguaNova.IdiomaGo.persistence.entity.FavoriteId;
 import com.LinguaNova.IdiomaGo.persistence.entity.UserEntity;
 import com.LinguaNova.IdiomaGo.persistence.entity.WordTranslationEntity;
 import com.LinguaNova.IdiomaGo.presentation.dto.favorite.CreateFavoriteDTO;

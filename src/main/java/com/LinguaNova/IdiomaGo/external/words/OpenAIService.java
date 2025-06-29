@@ -7,6 +7,8 @@ import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import static com.LinguaNova.IdiomaGo.util.AppRoutes.OPENAI_BASE_URL;
+
 @Component
 public class OpenAIService {
 
@@ -16,7 +18,7 @@ public class OpenAIService {
         OpenAIService.apiKey = key;
     }
 
-    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
+
     private static final String MODEL = "gpt-4.1-nano";
 
     public static IAResponse getWordExplanation(String word, String language) {
@@ -52,7 +54,7 @@ public class OpenAIService {
             headers.setBearerAuth(apiKey);
 
             HttpEntity<String> request = new HttpEntity<>(requestBody.toString(), headers);
-            ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, request, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(OPENAI_BASE_URL, HttpMethod.POST, request, String.class);
 
             if (response.getStatusCode() == HttpStatus.OK) {
                 JSONObject json = new JSONObject(response.getBody());

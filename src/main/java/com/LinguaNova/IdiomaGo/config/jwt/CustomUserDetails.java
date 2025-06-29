@@ -27,8 +27,6 @@ public class CustomUserDetails implements UserDetailsService {
 		UserEntity userEntity = userRepository.findByEmail(email)
 			.orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
 
-		System.out.println("USEEEEER");
-		System.out.println(userEntity);
 		return User.withUsername(userEntity.getEmail())
 			.password(userEntity.getPassword())
 			.roles("USER")

@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.util.Random;
 
+import static com.LinguaNova.IdiomaGo.util.AppRoutes.IMAGES_BASE_URL;
+
 @Component
 public class UnsplashService {
 
@@ -19,14 +21,12 @@ public class UnsplashService {
         UnsplashService.accessKey = key;
     }
 
-    private static final String BASE_URL = "https://api.unsplash.com/search/photos";
-
     public static String getImageUrlForWord(String word) {
         RestTemplate restTemplate = new RestTemplate();
         Random random = new Random();
 
         int perPage = random.nextInt(50) + 1;
-        String url = BASE_URL + "?query=" + word + "&client_id=" + accessKey + "&per_page=" + perPage;
+        String url = IMAGES_BASE_URL + "?query=" + word + "&client_id=" + accessKey + "&per_page=" + perPage;
 
         try {
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -34,7 +34,7 @@ public class UnsplashService {
                 return extractRandomImageUrl(response.getBody());
             }
 
-            url = BASE_URL + "?query=" + word + "&client_id=" + accessKey + "&per_page=1";
+            url = IMAGES_BASE_URL + "?query=" + word + "&client_id=" + accessKey + "&per_page=1";
             response = restTemplate.getForEntity(url, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 return extractRandomImageUrl(response.getBody());

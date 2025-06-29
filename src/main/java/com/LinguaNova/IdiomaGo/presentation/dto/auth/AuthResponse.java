@@ -1,12 +1,16 @@
 package com.LinguaNova.IdiomaGo.presentation.dto.auth;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthResponse {
 	private Long userId;
 	private String token;
-	public AuthResponse(Long userId, String token) { this.userId = userId; this.token = token; }
-	public String getToken() { return token; }
-
-	public Long getUserId() {
-		return userId;
-	}
 }
