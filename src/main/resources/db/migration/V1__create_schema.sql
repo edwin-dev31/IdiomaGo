@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS language (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     code VARCHAR(10)
 );
 
 CREATE TABLE IF NOT EXISTS users (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -14,18 +14,18 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS word (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS category (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS word_translation (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     user_id BIGINT,
     word_id BIGINT NOT NULL,
     language_id BIGINT NOT NULL,
@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS word_translation (
     FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET NULL
 );
 
-
 CREATE TABLE IF NOT EXISTS favorites (
     user_id BIGINT NOT NULL,
     word_translation_id BIGINT NOT NULL,
@@ -53,4 +52,4 @@ CREATE TABLE IF NOT EXISTS favorites (
     FOREIGN KEY (word_translation_id) REFERENCES word_translation(id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX uq_word_language ON word_translation (word_id, language_id);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_word_language ON word_translation (word_id, language_id);

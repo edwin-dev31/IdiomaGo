@@ -17,6 +17,6 @@ SELECT
     c.id AS category_id,
     c.name AS category_name
 FROM word_translation wt
-JOIN word w ON wt.word_id = w.id
-JOIN language l ON wt.language_id = l.id
+INNER JOIN word w ON wt.word_id = w.id
+INNER JOIN language l ON wt.language_id = l.id
 LEFT JOIN category c ON wt.category_id = c.id;
