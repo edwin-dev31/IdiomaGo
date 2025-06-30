@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.LinguaNova.IdiomaGo.util.AppRoutes.FRONTEND_BASE_URL;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -108,9 +110,8 @@ public class AuthController {
 
 	@GetMapping("/verify-email")
 	public ResponseEntity<?> verifyEmail(@RequestParam String token) {
-		String BASIC_PATH = "http://localhost:5173";
 		if (!jwtUtil.validateToken(token)) {
-			return ResponseEntity.status(302).header("Location", BASIC_PATH + "/email-verification?status=invalid").build();
+			return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=invalid").build();
 		}
 
 		String email = jwtUtil.extractEmail(token);
@@ -118,13 +119,13 @@ public class AuthController {
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
 		if (Boolean.TRUE.equals(user.getVerified())) {
-			return ResponseEntity.status(302).header("Location", BASIC_PATH + "/email-verification?status=already").build();
+			return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=already").build();
 		}
 
 		user.setVerified(true);
 		userService.update(user);
 
-		return ResponseEntity.status(302).header("Location", BASIC_PATH + "/email-verification?status=success").build();
+		return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=success").build();
 	}
 
 
