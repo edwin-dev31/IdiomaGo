@@ -1,44 +1,71 @@
-# 🌐 IdiomaGo
+# 🌐 IdiomaGo - Backend
 
-**IdiomaGo** is a web application built with **Spring Boot** and **Java**, designed to facilitate languageEntity learning in an interactive and dynamic way.  
-It allows easy management of words, translations, and multiple languages—perfect for building strong vocabulary and comprehension skills.
+**IdiomaGo** is the backend for a language learning platform built using **Spring Boot** and **Java**.  
+It provides secure user authentication (with OAuth), word translation management, AI-powered vocabulary generation, and multi-language support.
 
----
-
-## 🚀 Technologies Used
-
-- Java 17
-- Spring Boot
-- Maven
-- JPA / Hibernate
-- MySQL (Docker)
-- RESTful API
+This backend exposes a RESTful API consumed by the [IdiomaGo frontend](https://delightful-field-0bf6cfa0f.2.azurestaticapps.net), and relies on a robust PostgreSQL database for persistence.
 
 ---
 
-## 🐬 Setting Up the MySQL Database with Docker
+## 🧱 Architecture Overview
 
-Follow these steps to set up the MySQL database for **IdiomaGo** using Docker:
+- **Spring Boot**: Core framework for building RESTful services
+- **Spring Security**: Handles authentication, registration, and OAuth2 with Google, GitHub, and Facebook
+- **PostgreSQL**: Primary relational database
+- **JPA/Hibernate**: ORM for managing entities and relationships
+- **Docker + Docker Compose**: To containerize database and facilitate local setup
+- **Email Service**: Sends verification emails on registration
+- **OpenAI integration**: Powers intelligent word suggestions (limited to 4 languages per request)
 
-### 1️⃣ Create containers and Image
-crear el `.jar`
+---
+
+## ⚙️ Technologies Used
+
+| Tech             | Purpose                                 |
+|------------------|------------------------------------------|
+| Java 17          | Core language                            |
+| Spring Boot      | Framework for REST API                   |
+| Spring Security  | Authentication + OAuth                   |
+| PostgreSQL       | Database                    |
+| JPA / Hibernate  | ORM for persistence                      |
+| Maven            | Project build and dependency management  |
+| Docker           | Containerization                         |
+| OpenAI API       | Vocabulary generation support            |
+
+---
+
+## 🐳 Setting Up the PostgreSQL Database with Docker
+
+Ensure you have Docker installed, then follow these steps:
+
+### 1️⃣ Build the JAR
 
 ```bash
 ./mvnw clean package
 ```
 
-
+### 2️⃣ Start the Database Container
 ```bash
 docker-compose up -d
 ```
+This will start a container named idioma_go_db with a PostgreSQL instance using the configured port (typically 5432).
 
-2️⃣ Access the MySQL CLI
+### 3️⃣ Access the PostgreSQL CLI (Optional)
 ```bash
-docker exec -it idiomago mysql -u root -p
-```
-ó
-```bash
-docker exec -it idioma_go_db mysql -u edwin -p
+docker exec -it idioma_go_db psql -U edwin -d idiomago_db
 ```
 
-▶️ You can run the proyect excecute the `idioma_go_app` using the port `localhost:1731`
+## ▶️ Running the Backend
+
+Once the JAR is built, you can run the application:
+```bash
+java -jar target/idiomago-0.0.1-SNAPSHOT.jar
+```
+
+By default, it runs on:
+
+```bash
+http://localhost:1731/idiomago
+```
+
+You can configure this in `.env` file or `application.properties`
