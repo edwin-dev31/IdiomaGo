@@ -14,7 +14,7 @@ public class OpenAIService {
 
     private static String apiKey;
 
-    public OpenAIService(@Value("${openai.api.key}") String key) {
+    public OpenAIService(@Value("${OPENAI_API_KEY}") String key) {
         OpenAIService.apiKey = key;
     }
 

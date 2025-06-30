@@ -5,8 +5,8 @@ INSERT INTO language (name, code) VALUES
 ('french', 'fr'),
 ('german', 'de');
 
-INSERT INTO users (username, password, email) VALUES
-('ADMIN', '$2a$10$FT/jRbMf1Xvto20zNpnnxuVBpzTT7eUQnd8WifndX45svTg06c7Tu', 'edwin@admin.com');
+INSERT INTO users (username, password, email, verified) VALUES
+('ADMIN', '$2a$10$FT/jRbMf1Xvto20zNpnnxuVBpzTT7eUQnd8WifndX45svTg06c7Tu', 'edwin@admin.com', 1);
 
 INSERT INTO word (name) VALUES
 ('sol'),
