@@ -37,10 +37,13 @@ public class UserEntity {
 	private String email;
 
 	@Column(nullable = false)
-	private LocalDateTime createdAt = LocalDateTime.now();
+	private Boolean verified = false;
+
+	private String imageUrl;
+	private String imagePublicId;
 
 	@Column(nullable = false)
-	private Boolean verified = false;
+	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToMany
 	@JoinTable(

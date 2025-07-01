@@ -14,6 +14,8 @@ public class UserDTO {
 	private String username;
 	private String password;
 	private String email;
-	private LocalDateTime createdAt;
 	private Boolean verified;
+	private String imageUrl;
+	private String imagePublicId;
+	private LocalDateTime createdAt;
 }

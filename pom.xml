@@ -126,6 +126,14 @@
 			<version>0.2.0</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

@@ -5,13 +5,16 @@ import com.LinguaNova.IdiomaGo.persistence.entity.UserEntity;
 import com.LinguaNova.IdiomaGo.persistence.repository.IUserRepository;
 import com.LinguaNova.IdiomaGo.presentation.dto.user.CreateUserDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.user.UserUpdateDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
 import com.LinguaNova.IdiomaGo.util.exception.DuplicateResourceException;
 import com.LinguaNova.IdiomaGo.util.exception.ResourceNotFoundException;
 import com.LinguaNova.IdiomaGo.util.mapper.impl.user.CreateUserMapper;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.user.UpdateUserMapper;
 import com.LinguaNova.IdiomaGo.util.mapper.impl.user.UserMapper;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,29 +25,31 @@ public class UserService implements IUserService {
 	private final IUserRepository repository;
 	private final UserMapper userMapper;
 	private final CreateUserMapper createUserMapper;
+	private final UpdateUserMapper updateUserMapper;
 	private final PasswordEncoder passwordEncoder;
 
 	public UserService(IUserRepository repository, UserMapper userMapper,
-		CreateUserMapper createUserMapper, PasswordEncoder passwordEncoder) {
+                       CreateUserMapper createUserMapper, UpdateUserMapper updateUserMapper, PasswordEncoder passwordEncoder) {
 		this.repository = repository;
 		this.userMapper = userMapper;
 		this.createUserMapper = createUserMapper;
-		this.passwordEncoder = passwordEncoder;
+        this.updateUserMapper = updateUserMapper;
+        this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
-	public List<UserDTO> getAll() {
+	public List<UserDTO> findAll() {
 		return userMapper.mapToList(repository.findAll());
 	}
 
 	@Override
-	public Optional<UserDTO> getById(Long id) {
+	public Optional<UserDTO> findById(Long id) {
 		return repository.findById(id)
 			.map(userMapper::mapTo);
 	}
 
 	@Override
-	public Optional<UserEntity> getByEmail(String userName) {
+	public Optional<UserEntity> findByEmail(String userName) {
 		return repository.findByEmail(userName);
 	}
 
@@ -61,32 +66,42 @@ public class UserService implements IUserService {
 		return userMapper.mapTo(saved);
 	}
 
-
 	@Override
-	public UserDTO update(UserEntity user) {
-		return repository.findById(user.getId())
-				.map(existing -> {
-					if (user.getUsername() != null && !user.getUsername().isBlank()) {
-						existing.setUsername(user.getUsername());
-					}
+	public UserDTO update(Long userId, UserUpdateDTO user) {
+		return repository.findById(userId)
+			.map(existing -> {
 
-					if (user.getEmail() != null && !user.getEmail().isBlank()) {
-						existing.setEmail(user.getEmail());
-					}
-
-					if (user.getPassword() != null && !user.getPassword().isBlank()) {
+				updateIfPresent(user.getUsername(), existing::setUsername);
+				updateIfPresent(user.getEmail(), existing::setEmail);
+				if (user.getPassword() != null && !user.getPassword().isBlank()) {
+					if (isPasswordEncoded(user.getPassword())) {
 						existing.setPassword(user.getPassword());
+					} else {
+						existing.setPassword(passwordEncoder.encode(user.getPassword()));
 					}
+				}
 
-					if (user.getVerified() != null) {
-						existing.setVerified(user.getVerified());
-					}
+				updateIfPresent(user.getImageUrl(), existing::setImageUrl);
+				updateIfPresent(user.getImagePublicId(), existing::setImagePublicId);
 
-					UserEntity updated = repository.save(existing);
-					return userMapper.mapTo(updated);
-				})
-				.orElseThrow(() ->
-						new ResourceNotFoundException("User not found with id: " + user.getId()));
+				if (user.getVerified() != null) {
+					existing.setVerified(user.getVerified());
+				}
+
+				UserEntity updated = repository.save(existing);
+				return userMapper.mapTo(updated);
+			})
+			.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+	}
+
+	private void updateIfPresent(String value, Consumer<String> setter) {
+		if (value != null && !value.isBlank()) {
+			setter.accept(value);
+		}
+	}
+
+	private boolean isPasswordEncoded(String password) {
+		return password != null && password.matches("^\\$2[aby]\\$.{56}$");
 	}
 
 	@Override

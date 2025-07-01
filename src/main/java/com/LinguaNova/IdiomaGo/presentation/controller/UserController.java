@@ -1,35 +1,48 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
+import com.LinguaNova.IdiomaGo.external.cloudinary.CloudinaryResponse;
+import com.LinguaNova.IdiomaGo.external.cloudinary.CloudinaryService;
 import com.LinguaNova.IdiomaGo.persistence.entity.UserEntity;
 import com.LinguaNova.IdiomaGo.presentation.dto.user.CreateUserDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.user.UserUpdateDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
+
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
+import com.LinguaNova.IdiomaGo.util.exception.ResourceNotFoundException;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.user.UpdateUserMapper;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
 	private final IUserService userService;
-
-	public UserController(IUserService userService) {
+	private final CloudinaryService cloudinaryService;
+	private final UpdateUserMapper updateUserMapper;
+	public UserController(IUserService userService, CloudinaryService cloudinaryService, UpdateUserMapper updateUserMapper) {
 		this.userService = userService;
-	}
+        this.cloudinaryService = cloudinaryService;
+        this.updateUserMapper = updateUserMapper;
+    }
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> getAll() {
-		List<UserDTO> users = userService.getAll();
+		List<UserDTO> users = userService.findAll();
 		return ResponseEntity.ok(users);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> getById(@PathVariable Long id) {
-		return userService.getById(id)
+		return userService.findById(id)
 			.map(ResponseEntity::ok)
 			.orElse(ResponseEntity.notFound().build());
 	}
@@ -41,9 +54,9 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserEntity user) {
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
 		try {
-			UserDTO updated = userService.update(user);
+			UserDTO updated = userService.update(id, user);
 			return ResponseEntity.ok(updated);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();
@@ -55,4 +68,35 @@ public class UserController {
 		userService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PutMapping("/{id}/avatar")
+	public ResponseEntity<?> uploadAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+		UserDTO user = userService.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+		try {
+			String previousPublicId = user.getImagePublicId();
+			if (previousPublicId != null && !previousPublicId.isBlank()) {
+				cloudinaryService.delete(previousPublicId);
+			}
+
+			CloudinaryResponse uploadResult = cloudinaryService.upload(file);
+			user.setImageUrl(uploadResult.getImageUrl());
+			user.setImagePublicId(uploadResult.getPublicId());
+
+			UserDTO updated = userService.update(id, updateUserMapper.mapper.mapTo(user));
+			return ResponseEntity.ok(updated);
+
+		} catch (IOException e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("error", "Error reading uploaded file"));
+		} catch (Exception e) {
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("error", "Unexpected error: " + e.getMessage()));
+		}
+	}
+
+
 }

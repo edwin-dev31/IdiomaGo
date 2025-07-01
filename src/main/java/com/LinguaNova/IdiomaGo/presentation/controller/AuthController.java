@@ -47,7 +47,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-		Optional<UserEntity> optionalUser = userService.getByEmail(request.getEmail());
+		Optional<UserEntity> optionalUser = userService.findByEmail(request.getEmail());
 		UserEntity user = optionalUser.orElseThrow(() ->
 				new ResourceNotFoundException("User not found: " + request.getEmail()));
 
@@ -69,7 +69,7 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@Valid @RequestBody CreateUserDTO dto) {
-		Optional<UserEntity> existing = userService.getByEmail(dto.getEmail());
+		Optional<UserEntity> existing = userService.findByEmail(dto.getEmail());
 
 		if (existing.isPresent()) {
 			UserEntity user = existing.get();
@@ -115,7 +115,7 @@ public class AuthController {
 		}
 
 		String email = jwtUtil.extractEmail(token);
-		UserEntity user = userService.getByEmail(email)
+		UserEntity user = userService.findByEmail(email)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
 		if (Boolean.TRUE.equals(user.getVerified())) {

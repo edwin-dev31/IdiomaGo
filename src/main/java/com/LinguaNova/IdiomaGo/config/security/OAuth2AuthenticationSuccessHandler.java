@@ -60,7 +60,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             throw new IllegalStateException("Missing user info from provider: " + registrationId);
         }
 
-        if (userService.getByEmail(email).isEmpty()) {
+        if (userService.findByEmail(email).isEmpty()) {
             CreateUserDTO dto = new CreateUserDTO();
             dto.setUsername(username);
             dto.setEmail(email);
@@ -68,7 +68,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
             userService.save(dto);
         }
-        Long userId = userService.getByEmail(email).get().getId();
+        Long userId = userService.findByEmail(email).get().getId();
 
         String jwt = jwtUtil.generateToken(email);
         String redirectUrl = FRONTEND_REDIRECTION_URL + jwt + "&userId=" + userId;

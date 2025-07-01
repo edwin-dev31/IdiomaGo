@@ -10,4 +10,5 @@ public class AppRoutes {
     public static final String IMAGES_BASE_URL = "https://api.unsplash.com/search/photos";
     public static final String LANGUAGE_BASE_URL = "https://libretranslate.com/languages";
     public static final String OPENAI_BASE_URL = "https://api.openai.com/v1/chat/completions";
+    public static final String CLOUDYNARY_URL = "https://api.cloudinary.com/v1_1/";
 }
