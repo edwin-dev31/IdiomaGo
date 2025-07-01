@@ -84,7 +84,7 @@ public class UserController {
 			user.setImageUrl(uploadResult.getImageUrl());
 			user.setImagePublicId(uploadResult.getPublicId());
 
-			UserDTO updated = userService.update(id, updateUserMapper.mapper.mapTo(user));
+			UserDTO updated = userService.update(id, updateUserMapper.mapper.mapToUpdate(user));
 			return ResponseEntity.ok(updated);
 
 		} catch (IOException e) {

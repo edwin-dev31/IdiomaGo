@@ -9,6 +9,8 @@ import com.LinguaNova.IdiomaGo.presentation.dto.user.UserDTO;
 import com.LinguaNova.IdiomaGo.service.impl.EmailVerificationService;
 import com.LinguaNova.IdiomaGo.service.interfaces.IUserService;
 import com.LinguaNova.IdiomaGo.util.exception.ResourceNotFoundException;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.user.UpdateUserMapper;
+import com.LinguaNova.IdiomaGo.util.mapper.impl.user.UserMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -33,16 +35,17 @@ public class AuthController {
 	private final UserDetailsService userDetailsService;
 	private final IUserService userService;
 	private final EmailVerificationService emailVerificationService;
-
+	private final UpdateUserMapper updateUserMapper;
 
 	public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil,
                           UserDetailsService userDetailsService, IUserService userService,
-                          EmailVerificationService emailVerificationService, PasswordEncoder passwordEncoder) {
+                          EmailVerificationService emailVerificationService, PasswordEncoder passwordEncoder, UpdateUserMapper updateUserMapper) {
 		this.authManager = authManager;
 		this.jwtUtil = jwtUtil;
 		this.userDetailsService = userDetailsService;
         this.userService = userService;
         this.emailVerificationService = emailVerificationService;
+        this.updateUserMapper = updateUserMapper;
     }
 
 	@PostMapping("/login")
@@ -123,7 +126,7 @@ public class AuthController {
 		}
 
 		user.setVerified(true);
-		userService.update(user);
+		userService.update(user.getId(), updateUserMapper.mapTo(user));
 
 		return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=success").build();
 	}
