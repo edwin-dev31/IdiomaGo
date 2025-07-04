@@ -4,7 +4,6 @@ public class AppRoutes {
     public static final String BACKEND_BASE_URL = "https://idiomago-app-84aa3f1a7db9.herokuapp.com/idiomago";
     public static final String FRONTEND_BASE_URL = "https://delightful-field-0bf6cfa0f.2.azurestaticapps.net";
 
-
     public static final String VERIFY_EMAIL_ENDPOINT = BACKEND_BASE_URL + "/auth/verify-email?token=";
     public static final String FRONTEND_REDIRECTION_URL = FRONTEND_BASE_URL + "/oauth2-success?token=";
 

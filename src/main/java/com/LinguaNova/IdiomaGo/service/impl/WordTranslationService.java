@@ -6,10 +6,12 @@ import com.LinguaNova.IdiomaGo.persistence.repository.ILanguageRepository;
 import com.LinguaNova.IdiomaGo.persistence.repository.IWordRepository;
 import com.LinguaNova.IdiomaGo.persistence.repository.IWordTransalationRepository;
 import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.CreateWordTranslationDTO;
+import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.UpdateWordTranslationDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.wordTranslation.WordTranslationDTO;
 import com.LinguaNova.IdiomaGo.service.interfaces.IWordTranslationService;
 import com.LinguaNova.IdiomaGo.util.Visibility;
 import com.LinguaNova.IdiomaGo.util.exception.ResourceNotFoundException;
+import com.LinguaNova.IdiomaGo.util.exception.UnauthorizedException;
 import com.LinguaNova.IdiomaGo.util.mapper.impl.wordTranslation.CreateWordTranslationMapper;
 import com.LinguaNova.IdiomaGo.util.mapper.impl.wordTranslation.WordTranslationMapper;
 import org.springframework.stereotype.Service;
@@ -93,13 +95,48 @@ public class WordTranslationService implements IWordTranslationService {
 	}
 
 	@Override
-	public WordTranslationDTO update(Long id, CreateWordTranslationDTO word) {
-		return null;
+	public WordTranslationDTO update(Long id, UpdateWordTranslationDTO dto) {
+		if (!canUserEditTranslation(id, dto.getUserId())) {
+			throw new UnauthorizedException("You are not enabled to update this translation.");
+		}
+
+		WordTranslationEntity entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Translation not found with id: " + id));
+
+		entity.setTranslatedWord(dto.getTranslatedWord());
+		entity.setTranslatedExample(dto.getTranslatedExample());
+		entity.setTranslatedDescription(dto.getTranslatedDescription());
+
+		WordTranslationEntity updated = repository.save(entity);
+
+		// Convertir a DTO (aquí puedes usar un mapper si tienes)
+		WordTranslationDTO result = new WordTranslationDTO();
+		result.setId(updated.getId());
+		result.setTranslatedWord(updated.getTranslatedWord());
+		result.setTranslatedExample(updated.getTranslatedExample());
+		result.setTranslatedDescription(updated.getTranslatedDescription());
+		result.setImageUrl(entity.getImageUrl());
+
+		return result;
 	}
 
+
 	@Override
-	public void delete(Long id) {
+	public void delete(Long id, Long userId) {
+		if (!canUserEditTranslation(id, userId)) {
+			throw new UnauthorizedException("You are not enabled to delete this translation.");
+		}
+
+		if (!repository.existsById(id)) {
+			throw new ResourceNotFoundException("Translation not found with id: " + id);
+		}
+
 		repository.deleteById(id);
+	}
+
+
+	public boolean canUserEditTranslation(Long translationId, Long userId) {
+		return repository.existsByIdAndUserId(translationId, userId);
 	}
 
 	@Override

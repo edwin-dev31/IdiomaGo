@@ -12,4 +12,6 @@ public interface IWordTransalationRepository extends JpaRepository<WordTranslati
 	List<WordTranslationEntity> findBylanguageId(Long languageId);
 	boolean existsByWordIdAndLanguageId(Long wordId, Long languageId);
 	List<WordTranslationEntity> findByUserIdAndVisibility(Long userId, Visibility visibility);
+	boolean existsByIdAndUserId(Long translationId, Long userId);
+
 }
