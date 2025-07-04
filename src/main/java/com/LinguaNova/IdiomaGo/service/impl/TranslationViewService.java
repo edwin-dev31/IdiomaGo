@@ -61,7 +61,7 @@ public class TranslationViewService implements ITranslationViewService {
 
 	@Override
 	public List<TranslationView> saveSingleWords(SaveSingleWordTranslationDTO newTranslation){
-		WordTranslationEntity saved = aiWordTranslationService.saveSingleWords(newTranslation);
+		aiWordTranslationService.saveSingleWords(newTranslation);
 
 		return searchAllViews(newTranslation.getWord(), newTranslation.getLanguageCode());
 	};

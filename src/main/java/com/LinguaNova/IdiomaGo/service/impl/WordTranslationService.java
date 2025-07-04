@@ -77,7 +77,6 @@ public class WordTranslationService implements IWordTranslationService {
 		LanguageEntity language = getLanguageOrThrow(languageCode);
 		CategoryEntity category = getCategoryOrThrow(categoryId);
 
-		checkIfTranslationExists(word.getId(), language.getId());
 
 		WordTranslationEntity entity = new WordTranslationEntity();
 		entity.setUser(user);
@@ -131,11 +130,6 @@ public class WordTranslationService implements IWordTranslationService {
 				.orElseThrow(() -> new ResourceNotFoundException("Category not found: " + id));
 	}
 
-	private void checkIfTranslationExists(Long wordId, Long languageId) {
-		if (repository.existsByWordIdAndLanguageId(wordId, languageId)) {
-			throw new IllegalStateException("Translation already exists for this word and language.");
-		}
-	}
 
 	public List<WordTranslationDTO> findByUserAndVisibility(Long userId, Visibility visibility) {
 		List<WordTranslationEntity> list = repository.findByUserIdAndVisibility(userId, visibility);
