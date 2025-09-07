@@ -1,7 +1,7 @@
 package com.LinguaNova.IdiomaGo.util;
 
 public class AppRoutes {
-    public static final String BACKEND_BASE_URL = "https://partial-sabine-idiomago-c4716f6f.koyeb.app/idiomago";
+    public static final String BACKEND_BASE_URL = "https://idiomago.koyeb.app/idiomago";
     public static final String FRONTEND_BASE_URL = "https://delightful-field-0bf6cfa0f.2.azurestaticapps.net";
 
     public static final String VERIFY_EMAIL_ENDPOINT = BACKEND_BASE_URL + "/auth/verify-email?token=";
